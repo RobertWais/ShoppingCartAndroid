@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ShoppingCart</string>
+
+    <string name="welcomeMessage">Welcome to Shopping Cart!\n\n\n How would you like to proceed?</string>
+    <string name="logInButtonLabel">Log In</string>
+    <string name="signUpButtonLabel">Sign Up</string>
+    <string name="guestButtonLabel">Browse As Guest</string>
+    <string name="helpButtonLabel">Help and Documentation</string>
+
 </resources>
