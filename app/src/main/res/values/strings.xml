@@ -6,5 +6,7 @@
     <string name="signUpButtonLabel">Sign Up</string>
     <string name="guestButtonLabel">Browse As Guest</string>
     <string name="helpButtonLabel">Help and Documentation</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="signup_text">Enter Username and Password</string>
 
 </resources>
