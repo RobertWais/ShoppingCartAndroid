@@ -51,6 +51,7 @@ public class FirebaseService {
     }
 
     public void signUp(String email, String password, final Activity activity){
+        Log.d("PRINTING", "PRINTING");
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
             @Override
@@ -58,11 +59,11 @@ public class FirebaseService {
 
                 if(task.isSuccessful()){
                 //SUCCESS
-                    Log.d("FIREBASE AUTH", "SUCCESS");
+                    Log.d("FIREBASE AUTH", "SUCCESSFULLY added user");
                     FirebaseUser user = mAuth.getCurrentUser();
                 }else{
                     //NOT SUCCESS
-                    Log.d("FIREBASE AUTH", "ERROR");
+                    Log.d("FIREBASE AUTH", "ERROR - USER WAS NOT ADDED");
                     Toast.makeText(activity, "Sign Up Failed",Toast.LENGTH_SHORT).show();;
                 }
             }
