@@ -16,12 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity
             android:name=".ItemActivity"
             android:label="@string/title_activity_item"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan"></activity>
 
+=======
+>>>>>>> 1aa155cab9b222794b50a826e98a3eebca5ca9c9
     </application>
 
 </manifest>

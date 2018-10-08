@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ShoppingCart</string>
+<<<<<<< HEAD
 
     <string name="welcomeMessage">Welcome to Shopping Cart!\n\n\n How would you like to proceed?</string>
     <string name="logInButtonLabel">Log In</string>
@@ -106,4 +107,6 @@
     </string>
     <string name="action_settings">Settings</string>
 
+=======
+>>>>>>> 1aa155cab9b222794b50a826e98a3eebca5ca9c9
 </resources>
