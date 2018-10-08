@@ -21,7 +21,7 @@ public class ItemActivity extends AppCompatActivity {
         TextView prodDescription = findViewById(R.id.description);
         prodDescription.setText(R.string.itemDescription);
 
-        ImageView productImage = findViewById(R.id.productImage);
-        productImage.setImageResource(R.drawable.computer);
+        ImageView prodImage = findViewById(R.id.productImage);
+        prodImage.setImageResource(R.drawable.computer);
     }
 }
