@@ -27,6 +27,7 @@ public class FirebaseService {
     //Pass Activity into command
     //Possibly return value
     public void login(String email, String password, final Activity activity){
+
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
 
             @Override
@@ -50,6 +51,7 @@ public class FirebaseService {
     }
 
     public void signUp(String email, String password, final Activity activity){
+        mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

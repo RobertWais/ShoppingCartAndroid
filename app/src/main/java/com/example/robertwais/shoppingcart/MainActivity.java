@@ -1,5 +1,6 @@
 package com.example.robertwais.shoppingcart;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,6 +14,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        FirebaseService.getInstance().login("wais.robert@uwlax.edu","dirk1234", this);
+//        FirebaseService.getInstance().signUp("wais.robert@uwlax.edu","dirk1234", MainActivity.this);
+        Intent intent = new Intent(MainActivity.this, BrowseActivity.class);
+        startActivity(intent);
+
+
+
+
+
     }
 }
