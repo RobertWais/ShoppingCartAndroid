@@ -26,7 +26,9 @@ public class FirebaseService {
 
     //Pass Activity into command
     //Possibly return value
-    public void login(String email, String password, final Activity activity){
+
+    public boolean login(String email, String password, final Activity activity) {
+        final boolean[] success = {false};
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
 
@@ -37,20 +39,21 @@ public class FirebaseService {
                 //SUCCESS
                     Log.d("FIREBASE AUTH", "SUCCESS");
                     FirebaseUser user = mAuth.getCurrentUser();
+                    success[0] = true;
                 }else{
                 //NOT SUCCESS
                     Log.d("FIREBASE AUTH", "ERROR");
-                    Toast.makeText(activity, "Authentication Failed",Toast.LENGTH_SHORT).show();;
-
-
+                    Toast.makeText(activity, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                    success[0] = false;
                 }
 
             }
         });
-
+        return success[0];
     }
 
-    public void signUp(String email, String password, final Activity activity){
+    public boolean signUp(String email, String password, final Activity activity) {
+        final boolean[] success = {false};
         Log.d("PRINTING", "PRINTING");
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -61,12 +64,16 @@ public class FirebaseService {
                 //SUCCESS
                     Log.d("FIREBASE AUTH", "SUCCESSFULLY added user");
                     FirebaseUser user = mAuth.getCurrentUser();
+                    success[0] = true;
                 }else{
                     //NOT SUCCESS
                     Log.d("FIREBASE AUTH", "ERROR - USER WAS NOT ADDED");
-                    Toast.makeText(activity, "Sign Up Failed",Toast.LENGTH_SHORT).show();;
+                    Toast.makeText(activity, "Sign Up Failed", Toast.LENGTH_SHORT).show();
+                    success[0] = false;
+
                 }
             }
         });
+        return success[0];
     }
 }

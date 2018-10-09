@@ -6,39 +6,47 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import Firebase.FirebaseService;
 
 public class LogInActivity extends AppCompatActivity {
     String username, password;
     EditText usernameInput;
     EditText passwordInput;
 
-    Button loginAccount;
+    Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        usernameInput = findViewById(R.id.usernameInput);
-        passwordInput = findViewById(R.id.passwordInput);
+        usernameInput = findViewById(R.id.usernameLogin);
+        passwordInput = findViewById(R.id.passwordLogin);
 
-        loginAccount = findViewById(R.id.sendloginbutton);
-        loginAccount.setOnClickListener(new View.OnClickListener() {
+        loginButton = findViewById(R.id.sendLoginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean loginSuccess;
                 username = usernameInput.getText().toString();
                 password = passwordInput.getText().toString();
-                //On login success
-                BrowseLoggedIn();
-
+                if (!(username.equals("") || password.equals(""))) {
+                    loginSuccess = FirebaseService.getInstance().login(username, password, LogInActivity.this);
+                    if (loginSuccess)
+                        BrowseLoggedIn();
+                } else {
+                    Toast.makeText(LogInActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
 
     public void BrowseLoggedIn() {
-        Intent intent = new Intent(this, BrowseActivity.class);
-        startActivity(intent);
+        Intent i = new Intent(this, BrowseActivity.class);
+        startActivity(i);
     }
 
 }
