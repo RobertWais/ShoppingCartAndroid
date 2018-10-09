@@ -29,24 +29,16 @@ public class LogInActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean loginSuccess;
                 username = usernameInput.getText().toString();
                 password = passwordInput.getText().toString();
                 if (!(username.equals("") || password.equals(""))) {
-                    loginSuccess = FirebaseService.getInstance().login(username, password, LogInActivity.this);
-                    if (loginSuccess)
-                        BrowseLoggedIn();
+                    FirebaseService.getInstance().login(username, password, LogInActivity.this);
                 } else {
                     Toast.makeText(LogInActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-    }
-
-    public void BrowseLoggedIn() {
-        Intent i = new Intent(this, BrowseActivity.class);
-        startActivity(i);
     }
 
 }
