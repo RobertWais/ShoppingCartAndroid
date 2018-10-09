@@ -8,5 +8,7 @@
     <string name="helpButtonLabel">Help and Documentation</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="signup_text">Enter Username and Password</string>
+    <string name="login_text">Enter Login Credentials</string>
+    <string name="title_activity_log_in">LogInActivity</string>
 
 </resources>
