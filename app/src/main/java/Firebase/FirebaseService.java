@@ -30,6 +30,20 @@ public class FirebaseService {
     //Pass Activity into command
     //Possibly return value
 
+    public void signOut(){
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth!=null){
+            Log.d("SIGN OUT","MAUTH WASNT NULL");
+            mAuth.signOut();
+        }else{
+            Log.d("SIGN OUT","MAUTH WAS NULL");
+            mAuth.signOut();
+        }
+
+
+    }
+
+
     public void login(String email, String password, final Activity activity) {
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -81,4 +95,16 @@ public class FirebaseService {
 
         }
     }
+
+    public String isUser(){
+        if(mAuth!=null) {
+            if (mAuth.getCurrentUser() != null) {
+                if (mAuth.getCurrentUser().getEmail() != null) {
+                    return mAuth.getCurrentUser().getEmail();
+                }
+            }
+        }
+        return "Guest";
+    }
+
 }

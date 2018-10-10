@@ -1,10 +1,13 @@
 package Model;
 
+import android.media.Image;
+
 public class Item {
 
     private String name;
     private String description;
     private Double price;
+    private Image image;
 
 
     public Item(String name, String description, Double price){
@@ -24,6 +27,12 @@ public class Item {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public void setImage(Image image) {this.image = image;}
+
+    public Image getImage() {
+        return image;
     }
 
     public String getName() {

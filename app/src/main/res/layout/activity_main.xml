@@ -22,24 +22,24 @@
 
     <Button
         android:id="@+id/loginbutton"
-        android:layout_width="102dp"
+        android:layout_width="225dp"
         android:layout_height="63dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/logInButtonLabel"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/welcometextview"
         app:layout_constraintStart_toStartOf="@+id/welcometextview"
         app:layout_constraintTop_toBottomOf="@+id/welcometextview" />
 
     <Button
         android:id="@+id/signupbutton"
-        android:layout_width="104dp"
+        android:layout_width="225dp"
         android:layout_height="68dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/signUpButtonLabel"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/welcometextview"
@@ -48,11 +48,11 @@
 
     <Button
         android:id="@+id/guestbutton"
-        android:layout_width="168dp"
+        android:layout_width="225dp"
         android:layout_height="70dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/guestButtonLabel"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/welcometextview"

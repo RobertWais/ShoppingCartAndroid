@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import Model.Item;
 import com.example.robertwais.shoppingcart.R;
@@ -22,12 +23,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView name, price,description;
+        public ImageView imageView;
 
         public ViewHolder(View view){
             super(view);
             name = (TextView) view.findViewById(R.id.itemName);
             price = (TextView) view.findViewById(R.id.priceLabel);
             description = (TextView) view.findViewById(R.id.descriptionField);
+            imageView = (ImageView) view.findViewById(R.id.imageView);
+
             //SET VARIABLES
             //title = (TextView) view.findViewById(R.id.title);
         }
@@ -51,6 +55,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.name.setText(item.getName());
         holder.price.setText("$  "+String.valueOf(item.getPrice()));
         holder.description.setText(item.getDescription());
+        holder.imageView.setImageResource(R.drawable.android1);
     }
 
     @Override
