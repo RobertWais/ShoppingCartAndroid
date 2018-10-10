@@ -2,10 +2,13 @@ package Firebase;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.robertwais.shoppingcart.BrowseActivity;
+import com.example.robertwais.shoppingcart.LogInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,7 +29,8 @@ public class FirebaseService {
 
     //Pass Activity into command
     //Possibly return value
-    public void login(String email, String password, final Activity activity){
+
+    public void login(String email, String password, final Activity activity) {
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
 
@@ -37,20 +41,19 @@ public class FirebaseService {
                 //SUCCESS
                     Log.d("FIREBASE AUTH", "SUCCESS");
                     FirebaseUser user = mAuth.getCurrentUser();
+                    successLogin(user, activity);
                 }else{
                 //NOT SUCCESS
                     Log.d("FIREBASE AUTH", "ERROR");
-                    Toast.makeText(activity, "Authentication Failed",Toast.LENGTH_SHORT).show();;
-
-
+                    Toast.makeText(activity, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                    successLogin(null, activity);
                 }
 
             }
         });
-
     }
 
-    public void signUp(String email, String password, final Activity activity){
+    public void signUp(String email, String password, final Activity activity) {
         Log.d("PRINTING", "PRINTING");
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -64,9 +67,18 @@ public class FirebaseService {
                 }else{
                     //NOT SUCCESS
                     Log.d("FIREBASE AUTH", "ERROR - USER WAS NOT ADDED");
-                    Toast.makeText(activity, "Sign Up Failed",Toast.LENGTH_SHORT).show();;
+                    Toast.makeText(activity, "Sign Up Failed", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
+    }
+
+    public void successLogin(FirebaseUser user, final Activity activity) {
+        if (user != null) {
+            activity.startActivity(new Intent(activity, BrowseActivity.class));
+        } else {
+
+        }
     }
 }
