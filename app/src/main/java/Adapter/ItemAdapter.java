@@ -45,7 +45,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
-            Log.d("CLICKED","Cliked");
             //This is where the user has tapped
             int position = getAdapterPosition();
             Item item = itemList.get(position);
@@ -76,7 +75,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public void onBindViewHolder(ItemAdapter.ViewHolder holder, int position){
         Item item = itemList.get(position);
         holder.name.setText(item.getName());
-        holder.price.setText("$  "+String.valueOf(item.getPrice()));
+        holder.price.setText(String.valueOf(item.getPrice()));
         holder.description.setText(item.getDescription());
         switch (position){
             case 0:
