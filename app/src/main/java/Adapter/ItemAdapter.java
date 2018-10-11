@@ -4,13 +4,17 @@ package Adapter;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import Model.Item;
+
+import com.example.robertwais.shoppingcart.ItemActivity;
 import com.example.robertwais.shoppingcart.R;
 
 import java.util.List;
@@ -21,13 +25,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     private List<Item> itemList;
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
 
         public TextView name, price,description;
         public ImageView imageView;
 
         public ViewHolder(View view){
             super(view);
+
+            view.setOnClickListener(this);
             name = (TextView) view.findViewById(R.id.itemName);
             price = (TextView) view.findViewById(R.id.priceLabel);
             description = (TextView) view.findViewById(R.id.descriptionField);
@@ -35,6 +41,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
             //SET VARIABLES
             //title = (TextView) view.findViewById(R.id.title);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Log.d("CLICKED","Cliked");
+            //This is where the user has tapped
+            int position = getAdapterPosition();
+            Item item = itemList.get(position);
+
+            Intent intent = new Intent(context, ItemActivity.class);
+            intent.putExtra("Name", item.getName());
+            intent.putExtra("Description", item.getDescription());
+            intent.putExtra("Price",item.getPrice());
+            intent.putExtra("Position",position);
+
+            context.startActivity(intent);
         }
     }
 
@@ -78,6 +100,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         }
     }
+
+
 
     @Override
     public int getItemCount(){
