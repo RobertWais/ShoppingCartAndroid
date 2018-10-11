@@ -13,4 +13,5 @@
     <string name="login_password_prompt">Password</string>
     <string name="title_activity_log_in">LogInActivity</string>
 
+
 </resources>

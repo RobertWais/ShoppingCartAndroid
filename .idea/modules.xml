@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Cart.iml" filepath="$PROJECT_DIR$/.idea/Cart.iml" />
       <module fileurl="file://$PROJECT_DIR$/ShoppingCart.iml" filepath="$PROJECT_DIR$/ShoppingCart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ShoppingCartAndroid.iml" filepath="$PROJECT_DIR$/ShoppingCartAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ShoppingCartAndroid.iml" filepath="$PROJECT_DIR$/.idea/ShoppingCartAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
