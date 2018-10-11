@@ -25,7 +25,8 @@
             android:name=".LogInActivity"
             android:label="@string/title_activity_log_in"
             android:theme="@style/AppTheme" />
-        <activity android:name=".DocumentationActivity"></activity>
+        <activity android:name=".DocumentationActivity" />
+        <activity android:name=".ItemActivity"></activity>
     </application>
 
 </manifest>
