@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,10 @@ private TextView currUserView;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
-        Log.d("FIREBASE ERROR", "MADE IT");
         currUserView = (TextView) findViewById(R.id.usernameFieldMain);
-        currUserView.setText(FirebaseService.getInstance().isUser());
-
+        String name = FirebaseService.getInstance().isUser();
+        currUserView.setText(name);
+        Toast.makeText(this, "Hello"+name, Toast.LENGTH_SHORT).show();
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);

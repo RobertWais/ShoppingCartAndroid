@@ -18,14 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("HERE", "ROBERT");
-        FirebaseService.getInstance().signOut();
-
-//        FirebaseService.getInstance().signUp("wais.robert@uwlax.edu", "dirk1234", this);
-//        FirebaseService.getInstance().signUp("wais.robert@uwlax.edu","dirk1234", MainActivity.this);
-//        Intent intent = new Intent(MainActivity.this, BrowseActivity.class);
-//        startActivity(intent);
-
         loginButton = findViewById(R.id.loginbutton);
         loginButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -57,8 +49,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
 
 
-
+    //Sign the user out when we get to this activity
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseService.getInstance().signOut();
     }
 }

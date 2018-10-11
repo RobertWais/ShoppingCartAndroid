@@ -1,6 +1,7 @@
 package Adapter;
 
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -55,7 +56,27 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.name.setText(item.getName());
         holder.price.setText("$  "+String.valueOf(item.getPrice()));
         holder.description.setText(item.getDescription());
-        holder.imageView.setImageResource(R.drawable.android1);
+        switch (position){
+            case 0:
+                holder.imageView.setImageResource(R.drawable.android0);
+                break;
+            case 1:
+                holder.imageView.setImageResource(R.drawable.android1);
+                break;
+            case 2:
+                holder.imageView.setImageResource(R.drawable.android2);
+                break;
+            case 3:
+                holder.imageView.setImageResource(R.drawable.android3);
+                break;
+            case 4:
+                holder.imageView.setImageResource(R.drawable.android4);
+                break;
+            case 5:
+                holder.imageView.setImageResource(R.drawable.android5);
+                break;
+
+        }
     }
 
     @Override
