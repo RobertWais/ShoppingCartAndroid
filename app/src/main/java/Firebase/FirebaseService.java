@@ -78,10 +78,12 @@ public class FirebaseService {
                 //SUCCESS
                     Log.d("FIREBASE AUTH", "SUCCESSFULLY added user");
                     FirebaseUser user = mAuth.getCurrentUser();
+                    successSignUp(user, activity);
                 }else{
                     //NOT SUCCESS
                     Log.d("FIREBASE AUTH", "ERROR - USER WAS NOT ADDED");
                     Toast.makeText(activity, "Sign Up Failed", Toast.LENGTH_SHORT).show();
+                    successSignUp(null, activity);
 
                 }
             }
@@ -91,6 +93,14 @@ public class FirebaseService {
     public void successLogin(FirebaseUser user, final Activity activity) {
         if (user != null) {
             activity.startActivity(new Intent(activity, BrowseActivity.class));
+        } else {
+
+        }
+    }
+
+    public void successSignUp(FirebaseUser user, final Activity activity) {
+        if (user != null) {
+            activity.startActivity(new Intent(activity, LogInActivity.class));
         } else {
 
         }
