@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import Firebase.FirebaseService;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -33,13 +36,20 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 username = usernameInput.getText().toString();
                 password = passwordInput.getText().toString();
-                Back();
+                if (!(usernameInput.equals("") || passwordInput.equals(""))) {
+                    FirebaseService.getInstance().signUp(username, password, SignUpActivity.this);
+                    Toast.makeText(SignUpActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
+                    Login();
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
     }
-    public void Back(){
-        Intent intent = new Intent(this, MainActivity.class);
+    public void Login(){
+        Intent intent = new Intent(this, LogInActivity.class);
         startActivity(intent);
     }
 

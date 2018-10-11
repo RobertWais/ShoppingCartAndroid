@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseService.getInstance().signUp("wais.robert@uwlax.edu", "dirk1234", this);
+//        FirebaseService.getInstance().signUp("wais.robert@uwlax.edu", "dirk1234", this);
 //        FirebaseService.getInstance().signUp("wais.robert@uwlax.edu","dirk1234", MainActivity.this);
 //        Intent intent = new Intent(MainActivity.this, BrowseActivity.class);
 //        startActivity(intent);
