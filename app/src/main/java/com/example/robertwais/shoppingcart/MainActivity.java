@@ -3,6 +3,7 @@ package com.example.robertwais.shoppingcart;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        FirebaseService.getInstance().signUp("wais.robert@uwlax.edu", "dirk1234", this);
-//        FirebaseService.getInstance().signUp("wais.robert@uwlax.edu","dirk1234", MainActivity.this);
-//        Intent intent = new Intent(MainActivity.this, BrowseActivity.class);
-//        startActivity(intent);
 
         loginButton = findViewById(R.id.loginbutton);
         loginButton.setOnClickListener(new OnClickListener() {
@@ -53,8 +50,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
 
 
-
+    //Sign the user out when we get to this activity
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseService.getInstance().signOut();
     }
 }
