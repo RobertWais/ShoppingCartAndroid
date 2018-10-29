@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import Model.Item;
 public class ShoppingCartActivity extends AppCompatActivity {
 
     private Button addToCart;
+    private TextView totalItems, totalPrice;
 
 
     private RecyclerView recyclerView;
@@ -28,13 +30,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
-
-
-
-
-
-
-
+    totalItems = (TextView) findViewById(R.id.cartTotalItems);
+    totalPrice = (TextView) findViewById(R.id.cartTotalPrice);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.shoppingCartRecyclerView);
@@ -60,23 +57,14 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         };
 
-        for(int i = 0;i< items.length;i++){
+        for(int i = 0;i < items.length;i++){
             theList.add(items[i]);
         }
         adapter.notifyDataSetChanged();
 
-
-
-
-
-
-
-
-
-
-
-
-
+        //Move to function when anything is changed
+        totalItems.setText("Total Items: "+String.valueOf(theList.size()));
+        totalPrice.setText("Total Price: Change Later");
 
 
     }
