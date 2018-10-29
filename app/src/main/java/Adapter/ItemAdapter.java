@@ -75,7 +75,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public void onBindViewHolder(ItemAdapter.ViewHolder holder, int position){
         Item item = itemList.get(position);
         holder.name.setText(item.getName());
-        holder.price.setText(String.valueOf(item.getPrice()));
+
+        double price = Math.round(item.getPrice()*100);
+        price = price/100;
+        holder.price.setText("$ "+price);
+
         holder.description.setText(item.getDescription());
         switch (position){
             case 0:

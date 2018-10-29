@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
 
         public TextView name, price,quantity,total;
         public ImageView imageView;
+        public Button remove, refresh;
 
         public ViewHolder(View view){
             super(view);
@@ -36,6 +38,11 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
             total = (TextView) view.findViewById(R.id.itemCartTotalLbl);
             imageView = (ImageView) view.findViewById(R.id.itemCartImageView);
 
+
+            remove = view.findViewById(R.id.removeCartBtn);
+            refresh = view.findViewById(R.id.refreshCartBtn);
+
+
             //SET VARIABLES
             //title = (TextView) view.findViewById(R.id.title);
         }
@@ -44,6 +51,7 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
         public void onClick(View view) {
             //Maybe Change Later but nothing for now..
         }
+
     }
 
     public ItemCartAdapter(Context context, List<Item> list){
@@ -59,10 +67,15 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ItemCartAdapter.ViewHolder holder, int position){
+    public void onBindViewHolder(ItemCartAdapter.ViewHolder holder, final int position){
         Item item = itemList.get(position);
         holder.name.setText(item.getName());
-        holder.price.setText("Price: " +String.valueOf(item.getPrice()));
+        double price = Math.round(item.getPrice()*100);
+        price = price/100;
+        holder.price.setText("Price: " +price);
+
+
+
         holder.quantity.setText("Quantity: "+String.valueOf(item.getQuantity()));
 
         //Must Change Later for total for each item
@@ -87,6 +100,15 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
                 holder.imageView.setImageResource(R.drawable.android5);
                 break;
         }
+
+
+        holder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemList.remove(position);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

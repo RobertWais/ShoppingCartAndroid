@@ -6,19 +6,19 @@ public class Item {
 
     private String name;
     private String description;
-    private String price;
+    private Double price;
     private int quantity;
     private Image image;
 
 
-    public Item(String name, String description, String price){
+    public Item(String name, String description, Double price){
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = 0;
     }
 
-    public Item(String name, String description, String price, int quantity){
+    public Item(String name, String description, Double price, int quantity){
         this.name = name;
         this.description = description;
         this.price = price;
@@ -33,7 +33,7 @@ public class Item {
         this.description = description;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -53,7 +53,8 @@ public class Item {
         return description;
     }
 
-    public String getPrice() { return price; }
+    public Double getPrice() {
+        return price; }
 
     public int getQuantity() {
         return quantity;
