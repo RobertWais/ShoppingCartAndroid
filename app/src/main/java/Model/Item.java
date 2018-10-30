@@ -9,6 +9,10 @@ public class Item {
     private Double price;
     private int quantity;
     private Image image;
+    private String key;
+
+
+    public Item(){}
 
 
     public Item(String name, String description, Double price){
@@ -16,6 +20,7 @@ public class Item {
         this.description = description;
         this.price = price;
         this.quantity = 0;
+        this.key = "";
     }
 
     public Item(String name, String description, Double price, int quantity){
@@ -23,6 +28,7 @@ public class Item {
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.key = "";
     }
 
     public void setName(String name) {
@@ -59,4 +65,7 @@ public class Item {
     public int getQuantity() {
         return quantity;
     }
+
+    public void setKey(String key){this.key = key;}
+    public String getKey(){return this.key;}
 }

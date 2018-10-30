@@ -1,5 +1,7 @@
 package com.example.robertwais.shoppingcart;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,12 @@ import Adapter.ItemAdapter;
 import Firebase.FirebaseService;
 import Model.Item;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class BrowseActivity extends AppCompatActivity {
 
 private RecyclerView recyclerView;
@@ -22,9 +30,20 @@ private RecyclerView.Adapter adapter;
 private List<Item> theList;
 private TextView currUserView;
 
+private FirebaseDatabase db;
+private DatabaseReference database, itemsRef;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Database connections
+        db = FirebaseDatabase.getInstance();
+        database = db.getReference();
+        itemsRef = database.child("Items");
+
+
         setContentView(R.layout.activity_browse);
         currUserView = (TextView) findViewById(R.id.usernameFieldMain);
         String name = FirebaseService.getInstance().isUser();
@@ -54,9 +73,56 @@ private TextView currUserView;
 
         };
 
-        for(int i = 0;i< items.length;i++){
-            theList.add(items[i]);
-        }
+
+
+
+//        //Loop to add to Database
+//        for(int i = 0; i< items.length; i++){
+//            Item item = new Item(items[i].getName(), items[i].getDescription(), items[i].getPrice());
+//            String key = database.child("Items").push().getKey();
+//            item.setKey(key);
+//            database.child("Items").child(key).setValue(item);
+//        }
+
+//        for(int i = 0;i< items.length;i++){
+//            theList.add(items[i]);
+//        }
         adapter.notifyDataSetChanged();
+
+
+
+        //Listeners for Items
+        itemsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+               DatabaseReference newItemRef = dataSnapshot.getRef();
+               Item newItem = dataSnapshot.getValue(Item.class);
+
+                theList.add(newItem);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 }

@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.robertwais.shoppingcart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -20,6 +23,12 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
 
     private  Context context;
     private List<Item> itemList;
+    private FirebaseDatabase db;
+    private DatabaseReference database, itemRef;
+    private FirebaseAuth mAuth;
+
+
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
@@ -68,7 +77,14 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ItemCartAdapter.ViewHolder holder, final int position){
-        Item item = itemList.get(position);
+        final Item item = itemList.get(position);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        database = db.getReference();
+        itemRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+
+
         holder.name.setText(item.getName());
         double price = Math.round(item.getPrice()*100);
         price = price/100;
@@ -105,7 +121,7 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemList.remove(position);
+                itemRef.child(item.getKey()).setValue(null);
                 notifyDataSetChanged();
             }
         });

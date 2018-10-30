@@ -8,28 +8,37 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import Model.Item;
+
+
 public class ItemActivity extends AppCompatActivity {
 
     private Bundle itemPassed;
     private Button addToCart;
+
+    private FirebaseDatabase db;
+    private DatabaseReference database, cartRef;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        database = db.getReference();
+        cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+
+
+
         addToCart = findViewById(R.id.addBtnCart);
-        addToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Grab quantity
-                //Grab itemId
-                //Enter in cart
-                //Switch to Shopping Cart View
-                Intent i = new Intent(ItemActivity.this, ShoppingCartActivity.class);
-                startActivity(i);
-            }
-        });
+
 
 
         itemPassed = getIntent().getExtras();
@@ -66,5 +75,23 @@ public class ItemActivity extends AppCompatActivity {
                 break;
 
         }
+
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Item addItem = new Item(itemPassed.getString("Name"), itemPassed.getString("Description"), itemPassed.getDouble("Price"));
+                addItem.setKey(itemPassed.getString("key"));
+
+                cartRef.child(addItem.getKey()).setValue(addItem);
+
+
+                //Grab quantity
+                //Grab itemId
+                //Enter in cart
+                //Switch to Shopping Cart View
+                Intent i = new Intent(ItemActivity.this, ShoppingCartActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }
