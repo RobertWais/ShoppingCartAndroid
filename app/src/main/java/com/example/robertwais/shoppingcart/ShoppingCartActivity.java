@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -107,11 +108,18 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 String key = dataSnapshot.getKey();
                 int rem = -1;
                 for(int i = 0;i<theList.size();i++){
                     if(theList.get(i).getKey().equals(key)){
                         rem = i;
+                        Toast.makeText(ShoppingCartActivity.this, "Found it", Toast.LENGTH_SHORT).show();
+
                         break;
                     }
                 }
@@ -119,11 +127,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
                     theList.remove(rem);
                 }
                 adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
             }
 
             @Override
