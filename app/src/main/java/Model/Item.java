@@ -19,7 +19,6 @@ public class Item {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.quantity = 0;
         this.key = "";
     }
 
@@ -45,7 +44,7 @@ public class Item {
 
     public void setImage(Image image) {this.image = image;}
 
-    public void setQuantity(int num) {this.quantity = quantity;}
+    public void setQuantity(int num) {this.quantity = num;}
 
     public Image getImage() {
         return image;

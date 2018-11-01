@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Console;
 import java.util.List;
 
 import Model.Item;
@@ -82,13 +83,19 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
         database = db.getReference();
-        itemRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+
+
+        if(mAuth.getCurrentUser()==null){
+            itemRef = database.child("Guest").child("Cart");
+        }else{
+            itemRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+        }
 
 
         holder.name.setText(item.getName());
         double price = Math.round(item.getPrice()*100);
         price = price/100;
-        holder.price.setText("Price: " +price);
+        holder.price.setText("Price: " +item.getPrice());
 
 
 

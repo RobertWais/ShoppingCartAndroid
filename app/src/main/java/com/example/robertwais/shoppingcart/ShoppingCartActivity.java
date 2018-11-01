@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -47,7 +48,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
         database = db.getReference();
-        cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+        if(mAuth.getCurrentUser()!=null){
+            Log.d("Diddddd: ","guest");
+            cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+        }else{
+            Log.d("Ref: ","guest");
+            cartRef = database.child("Guest").child("Cart");
+        }
 
 
 
@@ -100,7 +107,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
                 //Move to function when anything is changed
                 totalItems.setText("Total Items: "+String.valueOf(theList.size()));
 
-                dubTotalPrice = Math.round(dubTotalPrice *100.0);
+                dubTotalPrice = Math.round(dubTotalPrice * 100.0);
                 dubTotalPrice = dubTotalPrice/100;
 
                 totalPrice.setText("Total Price: "+String.valueOf(dubTotalPrice));

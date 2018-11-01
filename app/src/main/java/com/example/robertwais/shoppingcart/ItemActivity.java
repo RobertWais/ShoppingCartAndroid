@@ -3,8 +3,10 @@ package com.example.robertwais.shoppingcart;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private Bundle itemPassed;
     private Button addToCart;
+    private EditText quantity;
 
     private FirebaseDatabase db;
     private DatabaseReference database, cartRef;
@@ -33,7 +36,12 @@ public class ItemActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
         database = db.getReference();
-        cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+
+        if(mAuth.getCurrentUser()==null){
+            cartRef = database.child("Guest").child("Cart");
+        }else{
+            cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+        }
 
 
 
@@ -51,6 +59,9 @@ public class ItemActivity extends AppCompatActivity {
 
         TextView prodDescription = findViewById(R.id.ItemActivityDescription);
         prodDescription.setText(itemPassed.getString("Description"));
+
+        quantity = (EditText) findViewById(R.id.itemQuantityLbl);
+        quantity.setText(itemPassed.getString("#"));
 
         ImageView prodImage = findViewById(R.id.ItemActivityImage);
         int position = itemPassed.getInt("Position");
@@ -79,7 +90,11 @@ public class ItemActivity extends AppCompatActivity {
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Item addItem = new Item(itemPassed.getString("Name"), itemPassed.getString("Description"), itemPassed.getDouble("Price"));
+                String tempQuantity = quantity.getText().toString();
+                int quantityInt = Integer.parseInt(tempQuantity);
+                Log.d("Integer: ", "qualityInt");
+
+                Item addItem = new Item(itemPassed.getString("Name"), itemPassed.getString("Description"), itemPassed.getDouble("Price"),quantityInt);
                 addItem.setKey(itemPassed.getString("key"));
 
                 cartRef.child(addItem.getKey()).setValue(addItem);
