@@ -91,7 +91,15 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String tempQuantity = quantity.getText().toString();
-                int quantityInt = Integer.parseInt(tempQuantity);
+                int quantityInt = 0;
+
+                try{
+                    quantityInt = Integer.parseInt(tempQuantity);
+                }catch(Exception e){
+                    return;
+                }
+
+
                 Log.d("Integer: ", "qualityInt");
 
                 Item addItem = new Item(itemPassed.getString("Name"), itemPassed.getString("Description"), itemPassed.getDouble("Price"),quantityInt);
