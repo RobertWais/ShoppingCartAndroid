@@ -11,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.robertwais.shoppingcart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Console;
 import java.util.List;
 
 import Model.Item;
@@ -20,6 +24,12 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
 
     private  Context context;
     private List<Item> itemList;
+    private FirebaseDatabase db;
+    private DatabaseReference database, itemRef;
+    private FirebaseAuth mAuth;
+
+
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
@@ -68,11 +78,24 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ItemCartAdapter.ViewHolder holder, final int position){
-        Item item = itemList.get(position);
+        final Item item = itemList.get(position);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        database = db.getReference();
+
+
+        if(mAuth.getCurrentUser()==null){
+            itemRef = database.child("Guest").child("Cart");
+        }else{
+            itemRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+        }
+
+
         holder.name.setText(item.getName());
         double price = Math.round(item.getPrice()*100);
         price = price/100;
-        holder.price.setText("Price: " +price);
+        holder.price.setText("Price: " +item.getPrice());
 
 
 
@@ -105,7 +128,7 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemList.remove(position);
+                itemRef.child(item.getKey()).setValue(null);
                 notifyDataSetChanged();
             }
         });

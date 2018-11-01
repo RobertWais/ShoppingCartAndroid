@@ -9,13 +9,17 @@ public class Item {
     private Double price;
     private int quantity;
     private Image image;
+    private String key;
+
+
+    public Item(){}
 
 
     public Item(String name, String description, Double price){
         this.name = name;
         this.description = description;
         this.price = price;
-        this.quantity = 0;
+        this.key = "";
     }
 
     public Item(String name, String description, Double price, int quantity){
@@ -23,6 +27,7 @@ public class Item {
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.key = "";
     }
 
     public void setName(String name) {
@@ -39,7 +44,7 @@ public class Item {
 
     public void setImage(Image image) {this.image = image;}
 
-    public void setQuantity(int num) {this.quantity = quantity;}
+    public void setQuantity(int num) {this.quantity = num;}
 
     public Image getImage() {
         return image;
@@ -59,4 +64,7 @@ public class Item {
     public int getQuantity() {
         return quantity;
     }
+
+    public void setKey(String key){this.key = key;}
+    public String getKey(){return this.key;}
 }

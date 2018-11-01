@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import Model.Item;
@@ -39,6 +40,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             description = (TextView) view.findViewById(R.id.descriptionField);
             imageView = (ImageView) view.findViewById(R.id.imageView);
 
+
             //SET VARIABLES
             //title = (TextView) view.findViewById(R.id.title);
         }
@@ -54,7 +56,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             intent.putExtra("Description", item.getDescription());
             intent.putExtra("Price",item.getPrice());
             intent.putExtra("Position",position);
+            intent.putExtra("key",item.getKey());
+            intent.putExtra("#",item.getQuantity());
 
+
+            Log.d("ThisIsHere", "");
             context.startActivity(intent);
         }
     }
@@ -107,6 +113,5 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public int getItemCount(){
         return itemList.size();
     }
-
 }
 

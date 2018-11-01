@@ -1,13 +1,24 @@
 package com.example.robertwais.shoppingcart;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +32,10 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private Button addToCart;
     private TextView totalItems, totalPrice;
 
+    private FirebaseDatabase db;
+    private DatabaseReference database, cartRef;
+    private FirebaseAuth mAuth;
+
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -30,8 +45,22 @@ public class ShoppingCartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
 
-    totalItems = (TextView) findViewById(R.id.cartTotalItems);
-    totalPrice = (TextView) findViewById(R.id.cartTotalPrice);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        database = db.getReference();
+        if(mAuth.getCurrentUser()!=null){
+            Log.d("Diddddd: ","guest");
+            cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+        }else{
+            Log.d("Ref: ","guest");
+            cartRef = database.child("Guest").child("Cart");
+        }
+
+
+
+
+        totalItems = (TextView) findViewById(R.id.cartTotalItems);
+        totalPrice = (TextView) findViewById(R.id.cartTotalPrice);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.shoppingCartRecyclerView);
@@ -58,19 +87,64 @@ public class ShoppingCartActivity extends AppCompatActivity {
         };
 
 
-        double dubTotalPrice = 0;
-        for(int i = 0;i < items.length;i++){
-            theList.add(items[i]);
-            dubTotalPrice += items[i].getPrice();
-        }
-        adapter.notifyDataSetChanged();
 
-        //Move to function when anything is changed
-        totalItems.setText("Total Items: "+String.valueOf(theList.size()));
 
-        dubTotalPrice = Math.round(dubTotalPrice *100.0);
-        dubTotalPrice = dubTotalPrice/100;
+        cartRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Item newItem = dataSnapshot.getValue(Item.class);
 
-        totalPrice.setText("Total Price: "+String.valueOf(dubTotalPrice));
+                theList.add(newItem);
+                adapter.notifyDataSetChanged();
+
+
+                double dubTotalPrice = 0;
+                for(int i = 0;i < theList.size();i++){
+                    dubTotalPrice += theList.get(i).getPrice();
+                }
+
+                //Reset Variables
+                //Move to function when anything is changed
+                totalItems.setText("Total Items: "+String.valueOf(theList.size()));
+
+                dubTotalPrice = Math.round(dubTotalPrice * 100.0);
+                dubTotalPrice = dubTotalPrice/100;
+
+                totalPrice.setText("Total Price: "+String.valueOf(dubTotalPrice));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                int rem = -1;
+                for(int i = 0;i<theList.size();i++){
+                    if(theList.get(i).getKey().equals(key)){
+                        rem = i;
+                        Toast.makeText(ShoppingCartActivity.this, "Found it", Toast.LENGTH_SHORT).show();
+
+                        break;
+                    }
+                }
+                if(rem!=-1){
+                    theList.remove(rem);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
