@@ -12,8 +12,9 @@ import android.widget.Toast;
 
 public class PromoActivity extends AppCompatActivity {
 
-    //pName = promotion Name, pAmt = percent off of item, pItemID = the item ID of the item for promo
+    //pName = promotion Name, promoAmount = percent off of item, pItemID = the item ID of the item for promo
     String pName, sDate, eDate, pAmt, pItemID;
+    int promoAmount;
     EditText promoName;
     EditText startDate;
     EditText endDate;
@@ -45,5 +46,11 @@ public class PromoActivity extends AppCompatActivity {
                 pItemID = promoItemID.getText().toString();
             }
         });
+        promoAmount = Integer.parseInt(pAmt);
+        if(promoAmount > 0 && promoAmount <= 100){
+            //proceed to add the promo to the database
+        } else {
+            Toast.makeText(PromoActivity.this, "Invalid promotion amount: must be 0 < % <= 100", Toast.LENGTH_SHORT).show();
+        }
     }
 }
