@@ -114,6 +114,7 @@ public class ItemActivity extends AppCompatActivity {
                 //Switch to Shopping Cart View
                 Intent i = new Intent(ItemActivity.this, ShoppingCartActivity.class);
                 startActivity(i);
+                finish();
             }
         });
     }
