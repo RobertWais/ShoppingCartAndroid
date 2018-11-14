@@ -6,15 +6,28 @@ public class Item {
 
     private String name;
     private String description;
-    private String price;
+    private Double price;
+    private int quantity;
     private Image image;
+    private String key;
 
 
-    public Item(String name, String description, String price){
+    public Item(){}
+
+
+    public Item(String name, String description, Double price){
         this.name = name;
         this.description = description;
         this.price = price;
+        this.key = "";
+    }
 
+    public Item(String name, String description, Double price, int quantity){
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.key = "";
     }
 
     public void setName(String name) {
@@ -25,11 +38,13 @@ public class Item {
         this.description = description;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
     public void setImage(Image image) {this.image = image;}
+
+    public void setQuantity(int num) {this.quantity = num;}
 
     public Image getImage() {
         return image;
@@ -43,7 +58,13 @@ public class Item {
         return description;
     }
 
-    public String getPrice() {
-        return price;
+    public Double getPrice() {
+        return price; }
+
+    public int getQuantity() {
+        return quantity;
     }
+
+    public void setKey(String key){this.key = key;}
+    public String getKey(){return this.key;}
 }

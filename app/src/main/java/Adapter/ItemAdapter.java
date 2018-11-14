@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import Model.Item;
@@ -39,6 +40,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             description = (TextView) view.findViewById(R.id.descriptionField);
             imageView = (ImageView) view.findViewById(R.id.imageView);
 
+
             //SET VARIABLES
             //title = (TextView) view.findViewById(R.id.title);
         }
@@ -54,7 +56,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             intent.putExtra("Description", item.getDescription());
             intent.putExtra("Price",item.getPrice());
             intent.putExtra("Position",position);
+            intent.putExtra("key",item.getKey());
+            intent.putExtra("#",item.getQuantity());
 
+
+            Log.d("ThisIsHere", "");
             context.startActivity(intent);
         }
     }
@@ -75,7 +81,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public void onBindViewHolder(ItemAdapter.ViewHolder holder, int position){
         Item item = itemList.get(position);
         holder.name.setText(item.getName());
-        holder.price.setText(String.valueOf(item.getPrice()));
+
+        double price = Math.round(item.getPrice()*100);
+        price = price/100;
+        holder.price.setText("$ "+price);
+
         holder.description.setText(item.getDescription());
         switch (position){
             case 0:
@@ -96,17 +106,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             case 5:
                 holder.imageView.setImageResource(R.drawable.android5);
                 break;
-
         }
     }
-
-
 
     @Override
     public int getItemCount(){
         return itemList.size();
     }
-
-
 }
 

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ItemActivity">
+    tools:context=".ItemActivity"
+    tools:layout_editor_absoluteY="25dp">
 
     <TextView
         android:id="@+id/ItemActivityPrice"
@@ -36,9 +37,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="25dp"
         android:text="Description"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addBtnCart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ItemActivityImage" />
@@ -54,4 +55,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ItemActivityImage"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/addBtnCart"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="16dp"
+        android:text="Add to Cart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ItemActivityImage"
+        app:layout_constraintTop_toBottomOf="@+id/ItemActivityPrice">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Quantity:"
+            tools:layout_editor_absoluteX="228dp"
+            tools:layout_editor_absoluteY="113dp" />
+
+        <EditText
+            android:id="@+id/itemQuantityLbl"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName|number"
+            android:singleLine="false"
+            android:text="0" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

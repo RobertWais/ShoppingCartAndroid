@@ -14,17 +14,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseService {
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase db;
+    private DatabaseReference database;
+    private FirebaseUser currUser;
 
     private static final FirebaseService thisInstance = new FirebaseService();
     public static FirebaseService getInstance(){return thisInstance;}
 
-    private FirebaseService(){}
+    private FirebaseService(){
+    }
 
 
     //Pass Activity into command
@@ -79,6 +83,14 @@ public class FirebaseService {
                     Log.d("FIREBASE AUTH", "SUCCESSFULLY added user");
                     FirebaseUser user = mAuth.getCurrentUser();
                     successSignUp(user, activity);
+
+
+                    //Save user in database
+                    db = FirebaseDatabase.getInstance();
+                    database = db.getReference();
+                    currUser = FirebaseAuth.getInstance().getCurrentUser();
+                    database.child("Users").child(user.getUid()).setValue(user.getEmail());
+
                 }else{
                     //NOT SUCCESS
                     Log.d("FIREBASE AUTH", "ERROR - USER WAS NOT ADDED");
