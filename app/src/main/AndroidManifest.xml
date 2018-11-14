@@ -27,7 +27,15 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".DocumentationActivity" />
         <activity android:name=".ItemActivity" />
-        <activity android:name=".ShoppingCartActivity"></activity>
+        <activity android:name=".ShoppingCartActivity" />
+        <activity
+            android:name=".PromoActivity"
+            android:label="@string/title_activity_promo"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AdminPage"
+            android:label="@string/title_activity_admin_page"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -12,5 +12,7 @@
     <string name="login_email_prompt">E-Mail</string>
     <string name="login_password_prompt">Password</string>
     <string name="title_activity_log_in">LogInActivity</string>
+    <string name="title_activity_promo">promoActivity</string>
+    <string name="title_activity_admin_page">AdminPage</string>
 
 </resources>
