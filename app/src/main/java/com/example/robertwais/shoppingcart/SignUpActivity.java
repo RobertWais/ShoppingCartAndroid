@@ -33,19 +33,19 @@ public class SignUpActivity extends AppCompatActivity {
 
         createAccount = findViewById(R.id.createAccountButton);
         createAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                username = usernameInput.getText().toString();
-                password = passwordInput.getText().toString();
-                if (!(username.equals("") || password.equals(""))) {
-                    FirebaseService.getInstance().signUp(username, password, SignUpActivity.this);
-                    Toast.makeText(SignUpActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(SignUpActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onClick(View view) {
+                    username = usernameInput.getText().toString();
+                    password = passwordInput.getText().toString();
+                    if (!(username.equals("") || password.equals(""))) {
+                        FirebaseService.getInstance().signUp(username, password, SignUpActivity.this);
+                        Toast.makeText(SignUpActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(SignUpActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
+                    }
+
+
                 }
-
-
-            }
         });
     }
 
