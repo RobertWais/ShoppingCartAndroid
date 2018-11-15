@@ -118,6 +118,7 @@ public class FirebaseService {
                     }else{
                         activity.startActivity(new Intent(activity, BrowseActivity.class));
                     }
+                    activity.finish();
                 }
 
                 @Override
