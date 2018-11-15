@@ -31,11 +31,12 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
     private Button backToBrowse;
     private Button addToCart;
-    private TextView totalItems, totalPrice;
+    private TextView totalItems, totalPrice, cartPromoSavings, subtotalPrice, cartTaxes, cartShipping;
 
     private FirebaseDatabase db;
     private DatabaseReference database, cartRef;
     private FirebaseAuth mAuth;
+    private TaxesHandler theTaxesHandler = new TaxesHandler();
 
 
     private RecyclerView recyclerView;
@@ -64,6 +65,10 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         totalItems = (TextView) findViewById(R.id.cartTotalItems);
         totalPrice = (TextView) findViewById(R.id.cartTotalPrice);
+        subtotalPrice = (TextView) findViewById(R.id.cartSubtotalPrice);
+        cartPromoSavings = (TextView) findViewById(R.id.cartPromoSavings);
+        cartTaxes = (TextView) findViewById(R.id.cartTaxes);
+        cartShipping = (TextView) findViewById(R.id.cartShipping);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.shoppingCartRecyclerView);
@@ -157,12 +162,36 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         //Reset Variables
         //Move to function when anything is changed
-        totalItems.setText("Total Items: "+totalItemCount);
+        totalItems.setText("Total Items:\n" + String.valueOf(theList.size()));
 
-        dubTotalPrice = Math.round(dubTotalPrice * 100.0);
-        dubTotalPrice = dubTotalPrice/100;
 
-        totalPrice.setText("Total Price: "+String.valueOf(dubTotalPrice));
+        dubTotalPrice = Math.round(dubTotalPrice * 1000.0);
+        dubTotalPrice = dubTotalPrice / 1000;
+
+        subtotalPrice.setText("Subtotal Price:\n$" + String.valueOf(dubTotalPrice));
+
+        double promoSavings = 0.0;
+        cartPromoSavings.setText("Promo Savings:\n$" + String.format("%.2f", promoSavings));
+        if (promoSavings > 0.0)
+            cartPromoSavings.setVisibility(View.VISIBLE);
+
+        double taxesValue = 0.0;
+        taxesValue = theTaxesHandler.calculateTaxes(ShoppingCartActivity.this, "WI", 54601, dubTotalPrice);
+        taxesValue = Math.round(taxesValue * 100.0);
+        taxesValue = taxesValue / 100;
+        cartTaxes.setText("Estimated Tax:\n$" + String.format("%.2f", taxesValue));
+
+        double shippingValue = 0.0;
+        cartShipping.setText("Shipping:\n$" + String.format("%.2f", shippingValue));
+
+        dubTotalPrice -= promoSavings;
+        dubTotalPrice += taxesValue;
+        dubTotalPrice += shippingValue;
+        dubTotalPrice = Math.round(dubTotalPrice * 1000.0);
+        dubTotalPrice = dubTotalPrice / 1000;
+
+        totalPrice.setText("Total Price:\n$" + String.valueOf(dubTotalPrice));
+
     }
 
 }
