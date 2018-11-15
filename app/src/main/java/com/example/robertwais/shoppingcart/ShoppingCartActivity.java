@@ -51,20 +51,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
-
         backToBrowse = findViewById(R.id.returnToBrowse);
-
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance();
-        database = db.getReference();
-        promotionReference = database.child("Promotions");
-        if(mAuth.getCurrentUser()!=null){
-            Log.d("Diddddd: ","guest");
-            cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
-        }else{
-            Log.d("Ref: ","guest");
-            cartRef = database.child("Guest").child("Cart");
-        }
         promoCode = (EditText) findViewById(R.id.UserPromoCodeField);
         enterCode = findViewById(R.id.UserPromoCodeEnter);
         totalItems = (TextView) findViewById(R.id.cartTotalItems);
@@ -73,6 +60,19 @@ public class ShoppingCartActivity extends AppCompatActivity {
         cartPromoSavings = (TextView) findViewById(R.id.cartPromoSavings);
         cartTaxes = (TextView) findViewById(R.id.cartTaxes);
         cartShipping = (TextView) findViewById(R.id.cartShipping);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        database = db.getReference();
+        promotionReference = database.child("Promotions");
+        if(mAuth.getCurrentUser()!=null){
+            cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+        }else{
+            cartRef = database.child("Guest").child("Cart");
+            promoCode.setVisibility(View.GONE);
+            enterCode.setVisibility(View.GONE);
+        }
+
 
 
         recyclerView = (RecyclerView) findViewById(R.id.shoppingCartRecyclerView);
