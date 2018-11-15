@@ -91,7 +91,8 @@ public class PromoActivity extends AppCompatActivity {
                         }else{
                             //proceed to add the promo to the database
                             Promotion addPromotion = new Promotion(pName, sDate, eDate, promoAmount, pItemID);
-                            db.getReference().child("Promotions").child(pItemID).setValue(addPromotion);
+                            db.getReference().child("Promotions").child(pName).setValue(addPromotion);
+                            finish();
                         }
                     } else {
                         Toast.makeText(PromoActivity.this, "Invalid promotion amount: must be 0 < % <= 100", Toast.LENGTH_SHORT).show();
