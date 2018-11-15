@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnToBrowse" />
@@ -54,17 +54,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout0"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/ConfirmCartBtn"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
 
         <TextView
             android:id="@+id/cartTotalItems"
@@ -73,6 +74,61 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="Total Items:"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="391dp" />
+
+        <TextView
+            android:id="@+id/cartSubtotalPrice"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Subtotal Price:"
+            tools:layout_editor_absoluteX="211dp"
+            tools:layout_editor_absoluteY="372dp" />
+
+        <TextView
+            android:id="@+id/cartPromoSavings"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Promo Savings:"
+            android:visibility="invisible"
+            tools:layout_editor_absoluteX="211dp"
+            tools:layout_editor_absoluteY="372dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/ConfirmCartBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/cartTaxes"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Estimated Tax:"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="391dp" />
+
+
+        <TextView
+            android:id="@+id/cartShipping"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Shipping:\n"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="391dp" />
 
