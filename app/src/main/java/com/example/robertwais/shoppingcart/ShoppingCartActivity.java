@@ -33,7 +33,7 @@ import Model.Promotion;
 public class ShoppingCartActivity extends AppCompatActivity {
 
     private Promotion promotion;
-    private Button backToBrowse, enterCode;
+    private Button backToBrowse, enterCode, checkoutButton, cancelButton;
     private Button addToCart;
     private TextView totalItems, totalPrice, cartPromoSavings, subtotalPrice, cartTaxes, cartShipping;
     private EditText promoCode;
@@ -54,6 +54,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
         backToBrowse = findViewById(R.id.returnToBrowse);
         promoCode = (EditText) findViewById(R.id.UserPromoCodeField);
         enterCode = findViewById(R.id.UserPromoCodeEnter);
+        checkoutButton = findViewById(R.id.ConfirmCartBtn);
+        cancelButton = findViewById(R.id.CancelCartBtn);
         totalItems = (TextView) findViewById(R.id.cartTotalItems);
         totalPrice = (TextView) findViewById(R.id.cartTotalPrice);
         subtotalPrice = (TextView) findViewById(R.id.cartSubtotalPrice);
@@ -132,6 +134,31 @@ public class ShoppingCartActivity extends AppCompatActivity {
         });
 
 
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Needs to update the database cart
+                theList.clear();
+                Toast.makeText(ShoppingCartActivity.this, "Checkout Complete!\nThank you!", Toast.LENGTH_SHORT).show();
+                adapter.notifyDataSetChanged();
+                checkPromotions();
+            }
+
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Needs to update the database cart
+                theList.clear();
+                Toast.makeText(ShoppingCartActivity.this, "Order cancelled.", Toast.LENGTH_SHORT).show();
+                adapter.notifyDataSetChanged();
+                checkPromotions();
+            }
+
+        });
+
+
         //Check for new items added to Cart
         cartRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -184,10 +211,12 @@ public class ShoppingCartActivity extends AppCompatActivity {
         //
         int totalItemCount = 0;
         double dubTotalPrice = 0;
+        double promoSavings = 0.0;
         for(int i = 0;i < theList.size();i++){
             if(promotion!=null && promotion.getItemID().equals(theList.get(i).getKey())){
                 Double tempPrice = (theList.get(i).getPrice()*theList.get(i).getQuantity());
-                dubTotalPrice += tempPrice - (tempPrice*(promotion.getAmount()/100));
+                promoSavings = tempPrice * (promotion.getAmount() / 100);
+                dubTotalPrice += tempPrice - promoSavings;
             }else{
                 dubTotalPrice += (theList.get(i).getPrice()*theList.get(i).getQuantity());
             }
@@ -196,18 +225,22 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         //Reset Variables
         //Move to function when anything is changed
-        totalItems.setText("Total Items:\n" + String.valueOf(theList.size()));
+        totalItems.setText("Total Items:\n" + String.valueOf(totalItemCount));
 
 
-        dubTotalPrice = Math.round(dubTotalPrice * 1000.0);
-        dubTotalPrice = dubTotalPrice / 1000;
+        dubTotalPrice = Math.round(dubTotalPrice * 100.0);
+        dubTotalPrice = dubTotalPrice / 100;
 
         subtotalPrice.setText("Subtotal Price:\n$" + String.valueOf(dubTotalPrice));
 
-        double promoSavings = 0.0;
+
+        promoSavings = Math.round(promoSavings * 100.0);
+        promoSavings = promoSavings / 100;
         cartPromoSavings.setText("Promo Savings:\n$" + String.format("%.2f", promoSavings));
         if (promoSavings > 0.0)
             cartPromoSavings.setVisibility(View.VISIBLE);
+        else
+            cartPromoSavings.setVisibility(View.INVISIBLE);
 
         double taxesValue = 0.0;
         taxesValue = theTaxesHandler.calculateTaxes(ShoppingCartActivity.this, "WI", 54601, dubTotalPrice);
@@ -221,8 +254,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
         dubTotalPrice -= promoSavings;
         dubTotalPrice += taxesValue;
         dubTotalPrice += shippingValue;
-        dubTotalPrice = Math.round(dubTotalPrice * 1000.0);
-        dubTotalPrice = dubTotalPrice / 1000;
+        dubTotalPrice = Math.round(dubTotalPrice * 100.0);
+        dubTotalPrice = dubTotalPrice / 100;
 
         totalPrice.setText("Total Price:\n$" + String.valueOf(dubTotalPrice));
 
