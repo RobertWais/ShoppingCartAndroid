@@ -37,10 +37,6 @@
             android:label="@string/title_activity_admin_page"
             android:theme="@style/AppTheme" />
         <activity android:name=".OrderHistory" />
-        <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

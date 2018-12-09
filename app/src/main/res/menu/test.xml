@@ -2,8 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_OrderHistory"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Order History"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_Profile"
+        android:orderInCategory="100"
+        android:title="Profile"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_Docs"
+        android:orderInCategory="100"
+        android:title="Documentation"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_Close"
+        android:orderInCategory="100"
+        android:title="Close"
         app:showAsAction="never" />
 </menu>
