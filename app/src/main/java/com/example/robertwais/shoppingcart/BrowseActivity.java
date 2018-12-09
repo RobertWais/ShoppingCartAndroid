@@ -157,7 +157,9 @@ private DatabaseReference database, itemsRef;
             startActivity(i);
             return true;
         }else if(id == R.id.action_Profile){
-            //Add profile Activity
+            Intent i = new Intent(BrowseActivity.this, ProfileActivity.class);
+            startActivity(i);
+            return true;
         }else if (id == R.id.action_Docs ){
             //Add Docs Activity
         }else{
