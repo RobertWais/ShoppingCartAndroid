@@ -64,8 +64,6 @@ public class OrderHistory extends AppCompatActivity {
 
         adapter = new FullOrderAdapter(OrderHistory.this, theList);
         recyclerView.setAdapter(adapter);
-//        recyclerView.setNestedScrollingEnabled(false);
-        Toast.makeText(OrderHistory.this, "Here: "+recyclerView.isNestedScrollingEnabled(), Toast.LENGTH_SHORT).show();
 
 
 
