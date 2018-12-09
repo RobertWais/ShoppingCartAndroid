@@ -32,7 +32,7 @@ private RecyclerView recyclerView;
 private RecyclerView.Adapter adapter;
 private List<Item> theList;
 private TextView currUserView;
-private Button cart;
+private Button cart, orderHistory;
 
 private FirebaseDatabase db;
 private DatabaseReference database, itemsRef;
@@ -54,6 +54,7 @@ private DatabaseReference database, itemsRef;
         currUserView.setText(name);
         Toast.makeText(this, "Hello "+name, Toast.LENGTH_SHORT).show();
         cart = findViewById(R.id.toCartBtn);
+        orderHistory = findViewById(R.id.toOrderHistory);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -74,6 +75,15 @@ private DatabaseReference database, itemsRef;
                 startActivity(i);
             }
         });
+
+        orderHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(BrowseActivity.this, OrderHistory.class);
+                startActivity(i);
+            }
+        });
+
 
         //Listeners for Items
         itemsRef.addChildEventListener(new ChildEventListener() {
