@@ -14,57 +14,59 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnToBrowse" />
 
     <Button
         android:id="@+id/ConfirmCartBtn"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="Checkout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/CancelCartBtn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/CancelCartBtn"
+        android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Checkout"
+        android:text="Cancel Order"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="168dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="5dp"
-        android:text="TextView"
-        android:textAlignment="viewEnd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/returnToBrowse"
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:text="Browse"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout0"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/ConfirmCartBtn"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
 
         <TextView
             android:id="@+id/cartTotalItems"
@@ -73,6 +75,61 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="Total Items:"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="391dp" />
+
+        <TextView
+            android:id="@+id/cartSubtotalPrice"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Subtotal Price:"
+            tools:layout_editor_absoluteX="211dp"
+            tools:layout_editor_absoluteY="372dp" />
+
+        <TextView
+            android:id="@+id/cartPromoSavings"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Promo Savings:"
+            android:visibility="invisible"
+            tools:layout_editor_absoluteX="211dp"
+            tools:layout_editor_absoluteY="372dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/ConfirmCartBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/cartTaxes"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Estimated Tax:"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="391dp" />
+
+
+        <TextView
+            android:id="@+id/cartShipping"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Shipping:\n"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="391dp" />
 
@@ -86,5 +143,32 @@
             tools:layout_editor_absoluteX="211dp"
             tools:layout_editor_absoluteY="372dp" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/UserPromoCodeField"
+        android:layout_width="95dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Code"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/shoppingCartRecyclerView"
+        app:layout_constraintStart_toEndOf="@+id/returnToBrowse"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/UserPromoCodeEnter"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="+"
+        app:layout_constraintBottom_toTopOf="@+id/shoppingCartRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/UserPromoCodeField"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

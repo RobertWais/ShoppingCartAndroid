@@ -10,15 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +30,21 @@ import java.util.List;
 import Adapter.ItemAdapter;
 import Adapter.ItemCartAdapter;
 import Model.Item;
+import Model.Order;
+import Model.Promotion;
 
 public class ShoppingCartActivity extends AppCompatActivity {
 
+    private Promotion promotion;
+    private Button backToBrowse, enterCode, checkoutButton, cancelButton;
     private Button addToCart;
-    private TextView totalItems, totalPrice;
+    private TextView totalItems, totalPrice, cartPromoSavings, subtotalPrice, cartTaxes, cartShipping;
+    private EditText promoCode;
 
     private FirebaseDatabase db;
-    private DatabaseReference database, cartRef;
+    private DatabaseReference database, cartRef, promotionReference,orderHistoryRef;
     private FirebaseAuth mAuth;
+    private TaxesHandler theTaxesHandler = new TaxesHandler();
 
 
     private RecyclerView recyclerView;
@@ -44,23 +54,32 @@ public class ShoppingCartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
+        backToBrowse = findViewById(R.id.returnToBrowse);
+        promoCode = (EditText) findViewById(R.id.UserPromoCodeField);
+        enterCode = findViewById(R.id.UserPromoCodeEnter);
+        checkoutButton = findViewById(R.id.ConfirmCartBtn);
+        cancelButton = findViewById(R.id.CancelCartBtn);
+        totalItems = (TextView) findViewById(R.id.cartTotalItems);
+        totalPrice = (TextView) findViewById(R.id.cartTotalPrice);
+        subtotalPrice = (TextView) findViewById(R.id.cartSubtotalPrice);
+        cartPromoSavings = (TextView) findViewById(R.id.cartPromoSavings);
+        cartTaxes = (TextView) findViewById(R.id.cartTaxes);
+        cartShipping = (TextView) findViewById(R.id.cartShipping);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
         database = db.getReference();
+        promotionReference = database.child("Promotions");
         if(mAuth.getCurrentUser()!=null){
-            Log.d("Diddddd: ","guest");
             cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+            orderHistoryRef = database.child(mAuth.getCurrentUser().getUid()).child("OrderHistory");
         }else{
-            Log.d("Ref: ","guest");
             cartRef = database.child("Guest").child("Cart");
+            orderHistoryRef = database.child("Guest").child("OrderHistory");
+            promoCode.setVisibility(View.GONE);
+            enterCode.setVisibility(View.GONE);
         }
 
-
-
-
-        totalItems = (TextView) findViewById(R.id.cartTotalItems);
-        totalPrice = (TextView) findViewById(R.id.cartTotalPrice);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.shoppingCartRecyclerView);
@@ -70,52 +89,110 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         adapter = new ItemCartAdapter(ShoppingCartActivity.this, theList);
         recyclerView.setAdapter(adapter);
-        Item[] items = {
-                new Item("Spider Man","Marvel's Spider-Man, commonly referred to as Spider-Man, is an action-adventure game developed by Insomniac Games and published by Sony Interactive Entertainment for the PlayStation 4, " +
-                        "based on the Marvel Comics superhero Spider-Man.",59.99),
-                new Item("Fallout 4","Fallout 4 is a post-apocalyptic action role-playing video game developed by Bethesda Game Studios and published by Bethesda Softworks. It is the fifth major installment in the Fallout series and was released worldwide" +
-                        " on November 10, 2015, for Microsoft Windows, PlayStation 4 and Xbox One.",15.00),
-                new Item("Madden 19","Gameplay in Madden NFL 19 was developed with two primary objectives: 1. Player Control across the field; 2.Immersive NFL Experience from start to finish. To achieve these objectives, EA's goal" +
-                        " is to deliver the most significant animation upgrade in Madden history.",59.99),
-                new Item("Red Dead Redemption 2 Ultimate Edition","After a robbery goes badly wrong in the western town of Blackwater, Arthur Morgan and the Van der Linde gang are forced to flee. With federal agents and the best bounty hunters in the nation massing on their heels, the gang must rob, steal and fight their way across the rugged heartland of America in order to survive. As deepening internal divisions threaten to tear the gang apart, Arthur must make a choice between his own idea" +
-                        "ls and loyalty to the gang who raised him.",99.99),
-                new Item("Assassin's Creed Odyssey","Write your own epic odyssey and become a legendary Spartan hero in Assassin's Creed® Odyssey, an inspiring adventure where you must forge your destiny and define your own path in a world on the brink of tearing itself apart. Influence how history unfolds as you ex" +
-                        "perience a rich and ever-changing world shaped by your decisions.",59.99),
-                new Item("Spyro Reignited Trilogy","Spyro's back and he's all scaled up! The original roast master is back! Same sick burns, same smoldering attitude, now all scaled up in stunning HD. Spyro is bringing the heat like never before in the Spyro Reignited Trilogy game collection. Rekindle the fire with the original three games, Spyro the Dragon, Spyro 2 Ripto's Rage! and Spyro Year of the Dragon. Explore the expansive realms, re-encounter the fiery personalities and relive the adventure in fully remastered glory. Because when there's a realm that" +
-                        " needs saving, there's only one dragon to call.",39.99),
-
-        };
 
 
+        //Check For Promo Code
+        enterCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!promoCode.getText().toString().equals("")){
+                    String tempCode = promoCode.getText().toString();
 
 
+                    promotionReference.child(tempCode).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            //Check if valid promotion
+                            if(dataSnapshot.getValue()!=null){
+                                Promotion prom = dataSnapshot.getValue(Promotion.class);
+                                String id = prom.getItemID();
+
+                                if(theList.size()<1){
+                                    Toast.makeText(ShoppingCartActivity.this, "No items in Cart", Toast.LENGTH_SHORT).show();
+                                }
+
+                                for(int i=0;i<theList.size();i++){
+                                    if(theList.get(i).getKey().equals(id)){
+                                        promotion = prom;
+                                        Toast.makeText(ShoppingCartActivity.this, "Promotion Applied", Toast.LENGTH_SHORT).show();
+                                        checkPromotions();
+                                        break;
+                                    }
+                                    if(i==theList.size()-1){
+                                        Toast.makeText(ShoppingCartActivity.this, "Promotion Not Valid For Cart", Toast.LENGTH_SHORT).show();
+                                    }
+//                                        Toast.makeText(ShoppingCartActivity.this, "Promotion Not Applied", Toast.LENGTH_SHORT).show()
+                                }
+                            }else{
+                                Toast.makeText(ShoppingCartActivity.this, "Promotion Invalid", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Needs to update the database cart
+//                theList.clear();
+//                adapter.notifyDataSetChanged();
+                Order newOrder = checkPromotions();
+                Toast.makeText(ShoppingCartActivity.this, "Checkout Complete!\nThank you!", Toast.LENGTH_SHORT).show();
+
+                //*Get Reference, add it to an array*
+                //Get a new key
+                String newKey = orderHistoryRef.push().getKey();
+                orderHistoryRef.child(newKey).setValue(newOrder)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(ShoppingCartActivity.this, "Purchase Made", Toast.LENGTH_SHORT).show();
+                                cartRef.setValue(null);
+                            }
+                        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ShoppingCartActivity.this, "Purchase Did Not Go Through", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Needs to update the database cart
+                //Old Brina Code
+//                theList.clear();
+//                Toast.makeText(ShoppingCartActivity.this, "Order cancelled.", Toast.LENGTH_SHORT).show();
+//                adapter.notifyDataSetChanged();
+//                checkPromotions();
+                cartRef.setValue(null);
+            }
+        });
+
+
+        //Check for new items added to Cart
         cartRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Item newItem = dataSnapshot.getValue(Item.class);
-
-                theList.add(newItem);
-                adapter.notifyDataSetChanged();
-
-
-                double dubTotalPrice = 0;
-                for(int i = 0;i < theList.size();i++){
-                    dubTotalPrice += theList.get(i).getPrice();
-                }
-
-                //Reset Variables
-                //Move to function when anything is changed
-                totalItems.setText("Total Items: "+String.valueOf(theList.size()));
-
-                dubTotalPrice = Math.round(dubTotalPrice * 100.0);
-                dubTotalPrice = dubTotalPrice/100;
-
-                totalPrice.setText("Total Price: "+String.valueOf(dubTotalPrice));
+                setTotals(dataSnapshot,s,true);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                setTotals(dataSnapshot,s,false);
             }
 
             @Override
@@ -125,8 +202,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
                 for(int i = 0;i<theList.size();i++){
                     if(theList.get(i).getKey().equals(key)){
                         rem = i;
-                        Toast.makeText(ShoppingCartActivity.this, "Found it", Toast.LENGTH_SHORT).show();
-
                         break;
                     }
                 }
@@ -134,6 +209,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
                     theList.remove(rem);
                 }
                 adapter.notifyDataSetChanged();
+                checkPromotions();
             }
 
             @Override
@@ -146,5 +222,87 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
             }
         });
+
+        backToBrowse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
+
+    public Order checkPromotions(){
+        //
+        int totalItemCount = 0;
+        double dubTotalPrice = 0;
+        double promoSavings = 0.0;
+        for(int i = 0;i < theList.size();i++){
+            if(promotion!=null && promotion.getItemID().equals(theList.get(i).getKey())){
+                Double tempPrice = (theList.get(i).getPrice()*theList.get(i).getQuantity());
+                promoSavings = tempPrice * (promotion.getAmount() / 100);
+                dubTotalPrice += tempPrice - promoSavings;
+            }else{
+                dubTotalPrice += (theList.get(i).getPrice()*theList.get(i).getQuantity());
+            }
+            totalItemCount += theList.get(i).getQuantity();
+        }
+
+        //Reset Variables
+        //Move to function when anything is changed
+        totalItems.setText("Total Items:\n" + String.valueOf(totalItemCount));
+
+
+        dubTotalPrice = Math.round(dubTotalPrice * 100.0);
+        dubTotalPrice = dubTotalPrice / 100;
+
+        subtotalPrice.setText("Subtotal Price:\n$" + String.valueOf(dubTotalPrice));
+
+
+        promoSavings = Math.round(promoSavings * 100.0);
+        promoSavings = promoSavings / 100;
+        cartPromoSavings.setText("Promo Savings:\n$" + String.format("%.2f", promoSavings));
+        if (promoSavings > 0.0)
+            cartPromoSavings.setVisibility(View.VISIBLE);
+        else
+            cartPromoSavings.setVisibility(View.INVISIBLE);
+
+        double taxesValue = 0.0;
+        taxesValue = theTaxesHandler.calculateTaxes(ShoppingCartActivity.this, "WI", 54601, dubTotalPrice);
+        taxesValue = Math.round(taxesValue * 100.0);
+        taxesValue = taxesValue / 100;
+        cartTaxes.setText("Estimated Tax:\n$" + String.format("%.2f", taxesValue));
+
+        double shippingValue = 0.0;
+        cartShipping.setText("Shipping:\n$" + String.format("%.2f", shippingValue));
+
+        dubTotalPrice -= promoSavings;
+        dubTotalPrice += taxesValue;
+        dubTotalPrice += shippingValue;
+        dubTotalPrice = Math.round(dubTotalPrice * 100.0);
+        dubTotalPrice = dubTotalPrice / 100;
+
+        totalPrice.setText("Total Price:\n$" + String.valueOf(dubTotalPrice));
+
+        if(promotion==null){
+//            Order(Item[] items, Double shippingCost, Double total, String shipping, String billing)
+          return new Order(theList, shippingValue, dubTotalPrice, "Shipping Address", "Billing Address");
+        }else{
+//            Order(Item[] items, Promotion promo, Double shippingCost, Double total, String shipping, String billing)
+            return new Order(theList, promotion ,shippingValue, dubTotalPrice, "Shipping Address", "Billing Address");
+        }
+
+    }
+
+
+    public void setTotals(@NonNull DataSnapshot dataSnapshot, @Nullable String s, Boolean add){
+
+        Item newItem = dataSnapshot.getValue(Item.class);
+        if (add) {
+            theList.add(newItem);
+            adapter.notifyDataSetChanged();
+        }
+
+        checkPromotions();
+    }
+
 }

@@ -55,7 +55,7 @@ public class ItemActivity extends AppCompatActivity {
         prodName.setText(itemPassed.getString("Name"));
 
         TextView prodPrice = findViewById(R.id.ItemActivityPrice);
-        prodPrice.setText(itemPassed.getString("Price"));
+        prodPrice.setText("$ "+String.valueOf(itemPassed.getDouble("Price")));
 
         TextView prodDescription = findViewById(R.id.ItemActivityDescription);
         prodDescription.setText(itemPassed.getString("Description"));
@@ -114,6 +114,7 @@ public class ItemActivity extends AppCompatActivity {
                 //Switch to Shopping Cart View
                 Intent i = new Intent(ItemActivity.this, ShoppingCartActivity.class);
                 startActivity(i);
+                finish();
             }
         });
     }

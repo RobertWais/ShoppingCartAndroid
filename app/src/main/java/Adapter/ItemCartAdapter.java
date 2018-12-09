@@ -2,6 +2,8 @@ package Adapter;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,9 @@ import android.widget.TextView;
 
 import com.example.robertwais.shoppingcart.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,7 +30,7 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
     private  Context context;
     private List<Item> itemList;
     private FirebaseDatabase db;
-    private DatabaseReference database, itemRef;
+    private DatabaseReference database, itemRef, quantityRef;
     private FirebaseAuth mAuth;
 
 
@@ -36,7 +41,7 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
 
         public TextView name, price,quantity,total;
         public ImageView imageView;
-        public Button remove, refresh;
+        public Button remove, add, subtract;
 
         public ViewHolder(View view){
             super(view);
@@ -50,7 +55,8 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
 
 
             remove = view.findViewById(R.id.removeCartBtn);
-            refresh = view.findViewById(R.id.refreshCartBtn);
+            add = view.findViewById(R.id.itemAddBtn);
+            subtract = view.findViewById(R.id.itemSubtractButton);
 
 
             //SET VARIABLES
@@ -77,7 +83,7 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ItemCartAdapter.ViewHolder holder, final int position){
+    public void onBindViewHolder(final ItemCartAdapter.ViewHolder holder, final int position){
         final Item item = itemList.get(position);
 
         mAuth = FirebaseAuth.getInstance();
@@ -90,6 +96,7 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
         }else{
             itemRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
         }
+        quantityRef = itemRef.child("quantity");
 
 
         holder.name.setText(item.getName());
@@ -102,24 +109,25 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
         holder.quantity.setText("Quantity: "+String.valueOf(item.getQuantity()));
 
         //Must Change Later for total for each item
-        holder.total.setText(String.valueOf("Total: " +item.getQuantity() * 2));
-        switch (position){
-            case 0:
+        holder.total.setText(String.valueOf("Total: " +item.getQuantity() * item.getPrice()));
+        String key = item.getKey();
+        switch (key){
+            case "-LQ1SiQFBH0LvrouzOe2":
                 holder.imageView.setImageResource(R.drawable.android0);
                 break;
-            case 1:
+            case "-LQ1SiQHGSBFH4yVbD8z":
                 holder.imageView.setImageResource(R.drawable.android1);
                 break;
-            case 2:
+            case "-LQ1SiQHGSBFH4yVbD9-":
                 holder.imageView.setImageResource(R.drawable.android2);
                 break;
-            case 3:
+            case "-LQ1SiQIuNPPgkqM6V2u":
                 holder.imageView.setImageResource(R.drawable.android3);
                 break;
-            case 4:
+            case "-LQ1SiQIuNPPgkqM6V2v":
                 holder.imageView.setImageResource(R.drawable.android4);
                 break;
-            case 5:
+            case "-LQ1SiQJ9wmNbtpf_sGe":
                 holder.imageView.setImageResource(R.drawable.android5);
                 break;
         }
@@ -130,6 +138,60 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
             public void onClick(View view) {
                 itemRef.child(item.getKey()).setValue(null);
                 notifyDataSetChanged();
+            }
+        });
+
+
+        holder.add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemRef.child(item.getKey()).child("quantity").setValue(item.getQuantity()+1);
+                item.setQuantity(item.getQuantity()+1);
+                notifyDataSetChanged();
+            }
+        });
+
+        holder.subtract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemRef.child(item.getKey()).child("quantity").setValue(item.getQuantity()-1);
+                if (item.getQuantity() - 1 <= 0) {
+                    itemRef.child(item.getKey()).setValue(null);
+                }
+                item.setQuantity(item.getQuantity()-1);
+                notifyDataSetChanged();
+            }
+        });
+
+        itemRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                DatabaseReference newItemRef = dataSnapshot.getRef();
+//                Item newItem = dataSnapshot.getValue(Item.class);
+//
+//                holder.quantity.setText("Quantity: "+String.valueOf(newItem.getQuantity()));
+//
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Item newItem = dataSnapshot.getValue(Item.class);
+                holder.quantity.setText("Quantity: "+String.valueOf(newItem.getQuantity()));
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
