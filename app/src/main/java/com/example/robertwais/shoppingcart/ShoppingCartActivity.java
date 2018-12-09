@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +30,7 @@ import java.util.List;
 import Adapter.ItemAdapter;
 import Adapter.ItemCartAdapter;
 import Model.Item;
+import Model.Order;
 import Model.Promotion;
 
 public class ShoppingCartActivity extends AppCompatActivity {
@@ -39,7 +42,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private EditText promoCode;
 
     private FirebaseDatabase db;
-    private DatabaseReference database, cartRef, promotionReference;
+    private DatabaseReference database, cartRef, promotionReference,orderHistoryRef;
     private FirebaseAuth mAuth;
     private TaxesHandler theTaxesHandler = new TaxesHandler();
 
@@ -69,8 +72,10 @@ public class ShoppingCartActivity extends AppCompatActivity {
         promotionReference = database.child("Promotions");
         if(mAuth.getCurrentUser()!=null){
             cartRef = database.child(mAuth.getCurrentUser().getUid()).child("Cart");
+            orderHistoryRef = database.child(mAuth.getCurrentUser().getUid()).child("OrderHistory");
         }else{
             cartRef = database.child("Guest").child("Cart");
+            orderHistoryRef = database.child("Guest").child("OrderHistory");
             promoCode.setVisibility(View.GONE);
             enterCode.setVisibility(View.GONE);
         }
@@ -138,24 +143,43 @@ public class ShoppingCartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Needs to update the database cart
-                theList.clear();
+//                theList.clear();
+//                adapter.notifyDataSetChanged();
+                Order newOrder = checkPromotions();
                 Toast.makeText(ShoppingCartActivity.this, "Checkout Complete!\nThank you!", Toast.LENGTH_SHORT).show();
-                adapter.notifyDataSetChanged();
-                checkPromotions();
-            }
 
+                //*Get Reference, add it to an array*
+                //Get a new key
+                String newKey = orderHistoryRef.push().getKey();
+                orderHistoryRef.child(newKey).setValue(newOrder)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(ShoppingCartActivity.this, "Purchase Made", Toast.LENGTH_SHORT).show();
+                                cartRef.setValue(null);
+                            }
+                        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ShoppingCartActivity.this, "Purchase Did Not Go Through", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Needs to update the database cart
-                theList.clear();
-                Toast.makeText(ShoppingCartActivity.this, "Order cancelled.", Toast.LENGTH_SHORT).show();
-                adapter.notifyDataSetChanged();
-                checkPromotions();
+                //Old Brina Code
+//                theList.clear();
+//                Toast.makeText(ShoppingCartActivity.this, "Order cancelled.", Toast.LENGTH_SHORT).show();
+//                adapter.notifyDataSetChanged();
+//                checkPromotions();
+                cartRef.setValue(null);
             }
-
         });
 
 
@@ -207,7 +231,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         });
     }
 
-    public void checkPromotions(){
+    public Order checkPromotions(){
         //
         int totalItemCount = 0;
         double dubTotalPrice = 0;
@@ -259,6 +283,14 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         totalPrice.setText("Total Price:\n$" + String.valueOf(dubTotalPrice));
 
+        if(promotion==null){
+//            Order(Item[] items, Double shippingCost, Double total, String shipping, String billing)
+          return new Order(theList, shippingValue, dubTotalPrice, "Shipping Address", "Billing Address");
+        }else{
+//            Order(Item[] items, Promotion promo, Double shippingCost, Double total, String shipping, String billing)
+            return new Order(theList, promotion ,shippingValue, dubTotalPrice, "Shipping Address", "Billing Address");
+        }
+
     }
 
 
@@ -271,7 +303,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
         }
 
         checkPromotions();
-
     }
 
 }

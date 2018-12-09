@@ -14,5 +14,12 @@
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="title_activity_promo">promoActivity</string>
     <string name="title_activity_admin_page">AdminPage</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

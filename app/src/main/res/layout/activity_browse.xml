@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BrowseActivity">
+    android:layout_marginTop="50dp"
+    tools:context=".BrowseActivity"
+    tools:showIn="@layout/activity_basebrowse">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -42,6 +44,19 @@
         android:text="Cart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+
+        android:id="@+id/toOrderHistory"
+        android:layout_width="90dp"
+        android:layout_height="75dp"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:text="History"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <SearchView
         android:layout_width="0dp"

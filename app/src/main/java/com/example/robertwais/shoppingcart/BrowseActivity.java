@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,7 +35,7 @@ private RecyclerView recyclerView;
 private RecyclerView.Adapter adapter;
 private List<Item> theList;
 private TextView currUserView;
-private Button cart;
+private Button cart, orderHistory;
 
 private FirebaseDatabase db;
 private DatabaseReference database, itemsRef;
@@ -41,6 +44,20 @@ private DatabaseReference database, itemsRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_basebrowse);
+
+
+        //Toolbar settings
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+
+
+
+
+
+
 
         //Database connections
         db = FirebaseDatabase.getInstance();
@@ -48,12 +65,14 @@ private DatabaseReference database, itemsRef;
         itemsRef = database.child("Items");
 
 
-        setContentView(R.layout.activity_browse);
+
         currUserView = (TextView) findViewById(R.id.usernameFieldMain);
         String name = FirebaseService.getInstance().isUser();
         currUserView.setText(name);
         Toast.makeText(this, "Hello "+name, Toast.LENGTH_SHORT).show();
         cart = findViewById(R.id.toCartBtn);
+        orderHistory = findViewById(R.id.toOrderHistory);
+        orderHistory.setVisibility(View.GONE);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -74,6 +93,15 @@ private DatabaseReference database, itemsRef;
                 startActivity(i);
             }
         });
+
+        orderHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(BrowseActivity.this, OrderHistory.class);
+                startActivity(i);
+            }
+        });
+
 
         //Listeners for Items
         itemsRef.addChildEventListener(new ChildEventListener() {
@@ -106,12 +134,39 @@ private DatabaseReference database, itemsRef;
 
             }
         });
+    }
 
+    //Menu stuff
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.test, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_OrderHistory) {
+            Intent i = new Intent(BrowseActivity.this, OrderHistory.class);
+            startActivity(i);
+            return true;
+        }else if(id == R.id.action_Profile){
+            //Add profile Activity
+        }else if (id == R.id.action_Docs ){
+            //Add Docs Activity
+        }else{
+            //Close
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
-
-
 
 //        Item[] items = {
 //                new Item("Spider Man","Marvel's Spider-Man, commonly referred to as Spider-Man, is an action-adventure game developed by Insomniac Games and published by Sony Interactive Entertainment for the PlayStation 4, " +
@@ -128,9 +183,6 @@ private DatabaseReference database, itemsRef;
 //                        " needs saving, there's only one dragon to call.",39.99),
 //
 //        };
-
-
-
 
 //        //Loop to add to Database
 //        for(int i = 0; i< items.length; i++){
