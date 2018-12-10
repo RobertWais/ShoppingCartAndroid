@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/profile" />
 
     <TextView
-        android:id="@+id/AddressInfo"
+        android:id="@+id/profileAddressInfo"
         android:layout_width="237dp"
         android:layout_height="104dp"
         android:layout_marginStart="8dp"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
     <Button
-        android:id="@+id/updateAddress"
+        android:id="@+id/updateAddressBtn"
         android:layout_width="164dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -60,10 +60,10 @@
         android:text="Update Address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddressInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/profileAddressInfo" />
 
     <TextView
-        android:id="@+id/editText4"
+        android:id="@+id/profileCreditCard"
         android:layout_width="321dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -74,10 +74,10 @@
         android:text="Credit Card: XXXX-XXXX-XXXX-"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/updateAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/updateAddressBtn" />
 
     <Button
-        android:id="@+id/changeCredit"
+        android:id="@+id/changeCreditBtn"
         android:layout_width="89dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -86,6 +86,6 @@
         android:text="Change"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toBottomOf="@+id/profileCreditCard" />
 
 </android.support.constraint.ConstraintLayout>

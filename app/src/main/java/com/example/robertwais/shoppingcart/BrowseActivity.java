@@ -52,13 +52,6 @@ private DatabaseReference database, itemsRef;
         setSupportActionBar(toolbar);
 
 
-
-
-
-
-
-
-
         //Database connections
         db = FirebaseDatabase.getInstance();
         database = db.getReference();
