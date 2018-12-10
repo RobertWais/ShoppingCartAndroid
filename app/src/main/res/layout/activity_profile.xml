@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/profile"
-        android:layout_width="103dp"
+        android:layout_width="wrap_content"
         android:layout_height="57dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -25,67 +25,96 @@
     <TextView
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="19dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Address"
+        android:text="Shipping Address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile" />
 
-    <TextView
+    <EditText
         android:id="@+id/profileAddressInfo"
-        android:layout_width="237dp"
-        android:layout_height="104dp"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:textSize="12dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="address info here"
+        android:text="123 La Crosse St, La Crosse, WI 54601"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
-    <Button
-        android:id="@+id/updateAddressBtn"
-        android:layout_width="164dp"
+    <EditText
+        android:id="@+id/profileCreditCard"
+        android:layout_width="223dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Update Address"
+        android:ems="10"
+        android:textSize="12dp"
+        android:inputType="textPersonName"
+        android:text="XXXX-XXXX-XXXX-XXXX"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <EditText
+        android:id="@+id/profileBilling"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:textSize="12dp"
+        android:inputType="textPersonName"
+        android:text="123 La Crosse St, La Crosse, WI 54601"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <Button
+        android:id="@+id/updateInfo"
+        android:layout_width="219dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Update Info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileCreditCard" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Billing Address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileAddressInfo" />
 
     <TextView
-        android:id="@+id/profileCreditCard"
-        android:layout_width="321dp"
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Credit Card: XXXX-XXXX-XXXX-"
+        android:text="Credit/Debit Card Number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/updateAddressBtn" />
-
-    <Button
-        android:id="@+id/changeCreditBtn"
-        android:layout_width="89dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Change"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileCreditCard" />
+        app:layout_constraintTop_toBottomOf="@+id/profileBilling" />
 
 </android.support.constraint.ConstraintLayout>
