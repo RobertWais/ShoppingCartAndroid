@@ -87,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String credit = creditCard.getText().toString();
                 newProfile = new Profile(ship, bill, credit);
                 profileRef.setValue(newProfile);
+                Toast.makeText(ProfileActivity.this, "Updated Profile Information", Toast.LENGTH_SHORT).show();
             }
         });
 
