@@ -21,11 +21,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import Model.Profile;
+
 public class FirebaseService {
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase db;
-    private DatabaseReference database;
+    private DatabaseReference database,profileRef;
     private FirebaseUser currUser;
 
     private static final FirebaseService thisInstance = new FirebaseService();
@@ -94,6 +96,16 @@ public class FirebaseService {
                     database = db.getReference();
                     currUser = FirebaseAuth.getInstance().getCurrentUser();
                     database.child("Users").child(user.getUid()).setValue(user.getEmail());
+
+
+                    db = FirebaseDatabase.getInstance();
+                    database = db.getReference();
+                    profileRef = database.child(mAuth.getCurrentUser().getUid()).child("ProfileHistory");
+                    currUser = FirebaseAuth.getInstance().getCurrentUser();
+                    database.child("Users").child(user.getUid()).setValue(user.getEmail());
+                    Profile newProfile = new Profile("Change later", "Chane Later", "Change Later");
+                    String newKey = profileRef.push().getKey();
+                    profileRef.child(newKey).setValue(newProfile);
 
                 }else{
                     //NOT SUCCESS

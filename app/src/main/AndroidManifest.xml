@@ -35,6 +35,11 @@
         <activity
             android:name=".AdminPage"
             android:label="@string/title_activity_admin_page"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".OrderHistory" />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme"></activity>
     </application>
 
