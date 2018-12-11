@@ -41,6 +41,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private Button addToCart;
     private TextView totalItems, totalPrice, cartPromoSavings, subtotalPrice, cartTaxes, cartShipping;
     private EditText promoCode;
+    private String stateCode;
+    private int billingZip, shippingZip;
 
     private FirebaseDatabase db;
     private DatabaseReference database, cartRef, promotionReference,orderHistoryRef,profileRef;
@@ -102,6 +104,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
                 //**Once we get profile you have access to methods
 
                userProf = dataSnapshot.getValue(Profile.class);
+
+                stateCode = userProf.getBillingState();
+                billingZip = Integer.parseInt(userProf.getBillingCode());
+                shippingZip = Integer.parseInt(userProf.getShippingCode());
+                Log.i("NEUTRAL", "stateCode: " + stateCode + " billingZip: " + billingZip + " shippingZip: " + shippingZip);
+
+
             }
 
             @Override
@@ -291,12 +300,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
             cartPromoSavings.setVisibility(View.INVISIBLE);
 
         double taxesValue = 0.0;
-        taxesValue = theTaxesHandler.calculateTaxes(ShoppingCartActivity.this, "WI", 54601, dubTotalPrice);
+        taxesValue = theTaxesHandler.calculateTaxes(ShoppingCartActivity.this, stateCode, billingZip, dubTotalPrice);
         taxesValue = Math.round(taxesValue * 100.0);
         taxesValue = taxesValue / 100;
         cartTaxes.setText("Estimated Tax:\n$" + String.format("%.2f", taxesValue));
 
         double shippingValue = 0.0;
+        shippingValue = theShippingHandler.calculateShipping(ShoppingCartActivity.this, shippingZip, totalItemCount);
         cartShipping.setText("Shipping:\n$" + String.format("%.2f", shippingValue));
 
         dubTotalPrice -= promoSavings;

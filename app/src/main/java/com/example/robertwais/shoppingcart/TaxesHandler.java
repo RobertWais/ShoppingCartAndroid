@@ -72,7 +72,7 @@ public class TaxesHandler {
         double taxValue = 0.0;
         int i;
 
-        for (i = 0; i < 52 && stateCodes[i] != stateCode; i++) {
+        for (i = 0; i < 52 && !stateCodes[i].equals(stateCode); i++) {
 
         }
         if (i == 52) {

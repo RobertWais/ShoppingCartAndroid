@@ -63,8 +63,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(!mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())){
-                        removeBtn.setVisibility(View.GONE);
+                    if (mAuth.getCurrentUser() != null) {
+                        if (!mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())) {
+                            removeBtn.setVisibility(View.GONE);
+                        }
                     }
                 }
                 @Override

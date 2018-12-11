@@ -75,11 +75,13 @@ private FirebaseAuth mAuth;
         db.getReference().child("Admin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())){
-                    cart.setVisibility(View.GONE);
-                    toolbar.setVisibility(View.GONE);
-                    currUserView.setVisibility(View.GONE);
-                    //Remove btn
+                if (mAuth.getCurrentUser() != null) {
+                    if (mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())) {
+                        cart.setVisibility(View.GONE);
+                        toolbar.setVisibility(View.GONE);
+                        currUserView.setVisibility(View.GONE);
+                        //Remove btn
+                    }
                 }
             }
             @Override
