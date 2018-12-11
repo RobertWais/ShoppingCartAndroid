@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Cart.iml" filepath="$PROJECT_DIR$/.idea/Cart.iml" />
       <module fileurl="file://$PROJECT_DIR$/ShoppingCart.iml" filepath="$PROJECT_DIR$/ShoppingCart.iml" />
       <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/cort.iml" filepath="$PROJECT_DIR$/.idea/cort.iml" />
     </modules>
