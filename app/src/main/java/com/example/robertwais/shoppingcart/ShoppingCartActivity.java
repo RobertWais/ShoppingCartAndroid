@@ -172,12 +172,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Needs to update the database cart
-                //Old Brina Code
-//                theList.clear();
-//                Toast.makeText(ShoppingCartActivity.this, "Order cancelled.", Toast.LENGTH_SHORT).show();
-//                adapter.notifyDataSetChanged();
-//                checkPromotions();
                 cartRef.setValue(null);
             }
         });

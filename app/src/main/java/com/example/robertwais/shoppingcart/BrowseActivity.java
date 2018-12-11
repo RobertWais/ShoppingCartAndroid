@@ -23,11 +23,13 @@ import Adapter.ItemAdapter;
 import Firebase.FirebaseService;
 import Model.Item;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class BrowseActivity extends AppCompatActivity {
 
@@ -35,10 +37,11 @@ private RecyclerView recyclerView;
 private RecyclerView.Adapter adapter;
 private List<Item> theList;
 private TextView currUserView;
-private Button cart, orderHistory;
+private Button cart, orderHistory,removeBtn;
 
 private FirebaseDatabase db;
 private DatabaseReference database, itemsRef;
+private FirebaseAuth mAuth;
 
 
     @Override
@@ -48,7 +51,7 @@ private DatabaseReference database, itemsRef;
 
 
         //Toolbar settings
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -58,14 +61,40 @@ private DatabaseReference database, itemsRef;
         itemsRef = database.child("Items");
 
 
-
         currUserView = (TextView) findViewById(R.id.usernameFieldMain);
         String name = FirebaseService.getInstance().isUser();
         currUserView.setText(name);
         Toast.makeText(this, "Hello "+name, Toast.LENGTH_SHORT).show();
         cart = findViewById(R.id.toCartBtn);
+
+
+        //If admin remove cart as well as disable settings
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+        database = db.getReference().child("Admin");
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())){
+                    cart.setVisibility(View.GONE);
+                    toolbar.setVisibility(View.GONE);
+                    currUserView.setVisibility(View.GONE);
+                    //Remove btn
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        /*Should be invisible*/
         orderHistory = findViewById(R.id.toOrderHistory);
         orderHistory.setVisibility(View.GONE);
+        /*                   */
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -114,7 +143,18 @@ private DatabaseReference database, itemsRef;
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                String key = dataSnapshot.getKey();
+                int rem = -1;
+                for(int i = 0;i<theList.size();i++){
+                    if(theList.get(i).getKey().equals(key)){
+                        rem = i;
+                        break;
+                    }
+                }
+                if(rem!=-1){
+                    theList.remove(rem);
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override

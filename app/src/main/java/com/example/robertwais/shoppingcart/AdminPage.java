@@ -11,19 +11,28 @@ import android.widget.Button;
 
 public class AdminPage extends AppCompatActivity {
 
-    Button button;
+    Button promoButton, browseBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_page);
 
-        button = findViewById(R.id.addPromoButton);
+        promoButton = findViewById(R.id.addPromoButton);
+        browseBtn = findViewById(R.id.browseForAdminBtn);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        promoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AdminPage.this, PromoActivity.class);
+                startActivity(i);
+            }
+        });
+
+        browseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(AdminPage.this, BrowseActivity.class);
                 startActivity(i);
             }
         });
