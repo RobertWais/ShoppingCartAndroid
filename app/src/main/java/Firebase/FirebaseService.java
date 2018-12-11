@@ -143,6 +143,8 @@ public class FirebaseService {
         }
     }
 
+
+
     public void successSignUp(FirebaseUser user, final Activity activity) {
         if (user != null) {
             activity.startActivity(new Intent(activity, LogInActivity.class));

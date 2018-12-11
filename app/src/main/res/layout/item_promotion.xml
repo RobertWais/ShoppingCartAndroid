@@ -26,7 +26,8 @@
                     android:id="@+id/promotionListSelectImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    card_view:srcCompat="@drawable/android1" />
+                    card_view:srcCompat="@drawable/android1"
+                    tools:srcCompat="@color/common_google_signin_btn_text_dark_focused" />
 
                 <TextView
                     android:id="@+id/promotionListSelectedName"
