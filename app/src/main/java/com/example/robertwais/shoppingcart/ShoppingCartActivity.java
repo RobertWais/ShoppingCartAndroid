@@ -296,11 +296,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
         taxesValue = taxesValue / 100;
         cartTaxes.setText("Estimated Tax:\n$" + String.format("%.2f", taxesValue));
 
-
-        double shippingValue;
-         shippingValue = theShippingHandler.calculateShipping(ShoppingCartActivity.this, shippingZip, totalItemCount); 
+        double shippingValue = 0.0;
         cartShipping.setText("Shipping:\n$" + String.format("%.2f", shippingValue));
-
 
         dubTotalPrice -= promoSavings;
         dubTotalPrice += taxesValue;
@@ -312,10 +309,20 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         if(promotion==null){
 //            Order(Item[] items, Double shippingCost, Double total, String shipping, String billing)
-          return new Order(theList, shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
+            if(userProf==null){
+                return new Order(theList, shippingValue, dubTotalPrice, "", "");
+
+            }else{
+                return new Order(theList, shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
+            }
         }else{
+            if(userProf==null){
+                return new Order(theList, promotion ,shippingValue, dubTotalPrice, "", "");
+
+            }else{
+                return new Order(theList, promotion ,shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
+            }
 //            Order(Item[] items, Promotion promo, Double shippingCost, Double total, String shipping, String billing)
-            return new Order(theList, promotion ,shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
         }
 
     }
