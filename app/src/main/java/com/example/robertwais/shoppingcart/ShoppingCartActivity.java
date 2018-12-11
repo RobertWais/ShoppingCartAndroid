@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,14 +41,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private Button addToCart;
     private TextView totalItems, totalPrice, cartPromoSavings, subtotalPrice, cartTaxes, cartShipping;
     private EditText promoCode;
-    private String stateCode;
-    private int billingZip, shippingZip;
 
     private FirebaseDatabase db;
-    private DatabaseReference database, cartRef, promotionReference, orderHistoryRef, profileRef;
+    private DatabaseReference database, cartRef, promotionReference,orderHistoryRef,profileRef;
     private FirebaseAuth mAuth;
     private TaxesHandler theTaxesHandler = new TaxesHandler();
     private ShippingHandler theShippingHandler = new ShippingHandler();
+    private Profile userProf;
 
 
     private RecyclerView recyclerView;
@@ -84,6 +82,33 @@ public class ShoppingCartActivity extends AppCompatActivity {
             promoCode.setVisibility(View.GONE);
             enterCode.setVisibility(View.GONE);
         }
+
+        //Get shipping address
+        //billing address
+        //Shipping cost
+        //Tax
+
+        if(mAuth.getCurrentUser()!=null){
+            profileRef = database.child(mAuth.getCurrentUser().getUid()).child("ProfileHistory");
+        }else{
+            profileRef = database.child("Guest").child("ProfileHistory");
+        }
+
+        //**This retrieves from database do line below this comment
+
+        profileRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //**Once we get profile you have access to methods
+
+               userProf = dataSnapshot.getValue(Profile.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
 
@@ -265,51 +290,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
         else
             cartPromoSavings.setVisibility(View.INVISIBLE);
 
-        //Brian Taxes and Shipping
-
-        /* Cannot pull info from profile
-        if(mAuth.getCurrentUser()!=null){
-            profileRef = database.child(mAuth.getCurrentUser().getUid()).child("ProfileHistory");
-        }else{
-            profileRef = database.child("Guest").child("ProfileHistory");
-        }
-
-
-        profileRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Profile profile = dataSnapshot.getValue(Profile.class);
-
-                stateCode = profile.getBillingState();
-                billingZip = Integer.parseInt(profile.getBillingCode());
-
-                shippingZip = Integer.parseInt(profile.getShippingCode());
-                Log.i("NEUTRAL", "stateCode: " + stateCode + " billingZip: " + billingZip + " shippingZip: " + shippingZip);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
-        //Log.i("NEUTRAL", "stateCode: " + stateCode + " billingZip: " + billingZip + " shippingZip: " + shippingZip);
-
-        String stateCode = "WI";
-        int billingZip = 54601;
-        int shippingZip = 54601;
-
-        double taxesValue;
-        taxesValue = theTaxesHandler.calculateTaxes(ShoppingCartActivity.this, stateCode, billingZip, dubTotalPrice);
+        double taxesValue = 0.0;
+        taxesValue = theTaxesHandler.calculateTaxes(ShoppingCartActivity.this, "WI", 54601, dubTotalPrice);
         taxesValue = Math.round(taxesValue * 100.0);
         taxesValue = taxesValue / 100;
         cartTaxes.setText("Estimated Tax:\n$" + String.format("%.2f", taxesValue));
 
-
-        //int shippingZip = 54601;
-
-        double shippingValue;
-        shippingValue = theShippingHandler.calculateShipping(ShoppingCartActivity.this, shippingZip, totalItemCount);
+        double shippingValue = 0.0;
         cartShipping.setText("Shipping:\n$" + String.format("%.2f", shippingValue));
 
         dubTotalPrice -= promoSavings;
@@ -322,10 +309,20 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         if(promotion==null){
 //            Order(Item[] items, Double shippingCost, Double total, String shipping, String billing)
-          return new Order(theList, shippingValue, dubTotalPrice, "Shipping Address", "Billing Address");
+            if(userProf==null){
+                return new Order(theList, shippingValue, dubTotalPrice, "", "");
+
+            }else{
+                return new Order(theList, shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
+            }
         }else{
+            if(userProf==null){
+                return new Order(theList, promotion ,shippingValue, dubTotalPrice, "", "");
+
+            }else{
+                return new Order(theList, promotion ,shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
+            }
 //            Order(Item[] items, Promotion promo, Double shippingCost, Double total, String shipping, String billing)
-            return new Order(theList, promotion ,shippingValue, dubTotalPrice, "Shipping Address", "Billing Address");
         }
 
     }

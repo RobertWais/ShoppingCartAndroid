@@ -80,21 +80,40 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
-            //This is where the user has tapped
-            int position = getAdapterPosition();
-            Item item = itemList.get(position);
-
-            Intent intent = new Intent(context, ItemActivity.class);
-            intent.putExtra("Name", item.getName());
-            intent.putExtra("Description", item.getDescription());
-            intent.putExtra("Price",item.getPrice());
-            intent.putExtra("Position",position);
-            intent.putExtra("key",item.getKey());
-            intent.putExtra("#",item.getQuantity());
 
 
-            Log.d("ThisIsHere", "");
-            context.startActivity(intent);
+            //If admin remove cart as well as disable settings
+            mAuth = FirebaseAuth.getInstance();
+            db = FirebaseDatabase.getInstance();
+            database = db.getReference().child("Admin");
+            //
+            database.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(!mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())){
+                        //This is where the user has tapped
+                        int position = getAdapterPosition();
+                        Item item = itemList.get(position);
+
+                        Intent intent = new Intent(context, ItemActivity.class);
+                        intent.putExtra("Name", item.getName());
+                        intent.putExtra("Description", item.getDescription());
+                        intent.putExtra("Price",item.getPrice());
+                        intent.putExtra("Position",position);
+                        intent.putExtra("key",item.getKey());
+                        intent.putExtra("#",item.getQuantity());
+
+
+                        Log.d("ThisIsHere", "");
+                        context.startActivity(intent);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         }
     }
 
@@ -122,22 +141,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.description.setText(item.getDescription());
         String key = item.getKey();
         switch (key){
-            case "-LQ1SiQFBH0LvrouzOe2":
+            case "-LTQeVHIhk6iGDbKT_PT":
                 holder.imageView.setImageResource(R.drawable.android0);
                 break;
-            case "-LQ1SiQHGSBFH4yVbD8z":
+            case "-LTQeVHNjO-kl17TuK7D":
                 holder.imageView.setImageResource(R.drawable.android1);
                 break;
-            case "-LQ1SiQHGSBFH4yVbD9-":
+            case "-LTQeVHS6Psnmv87M5Bt":
                 holder.imageView.setImageResource(R.drawable.android2);
                 break;
-            case "-LQ1SiQIuNPPgkqM6V2u":
+            case "-LTQeVHUegrdz79jtdR9":
                 holder.imageView.setImageResource(R.drawable.android3);
                 break;
-            case "-LQ1SiQIuNPPgkqM6V2v":
+            case "-LTQeVHaXSrwccgFwCoF":
                 holder.imageView.setImageResource(R.drawable.android4);
                 break;
-            case "-LQ1SiQJ9wmNbtpf_sGe":
+            case "-LTQeVHkfSqwroRHevmZ":
                 holder.imageView.setImageResource(R.drawable.android5);
                 break;
         }

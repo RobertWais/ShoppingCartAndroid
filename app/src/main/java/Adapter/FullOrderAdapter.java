@@ -107,9 +107,13 @@ public class FullOrderAdapter extends RecyclerView.Adapter<FullOrderAdapter.View
         holder.total.setText(order.getTotal().toString());
         holder.shippingAddress.setText(order.getShippingAddress());
         holder.billingAddress.setText(order.getBillingAddress());
-        holder.discountPrice.setText("Change later");
-        holder.taxPrice.setText("Change later");
-        holder.shippingPrice.setText("Change later");
+        if(order.getDiscounts() != null){
+            holder.discountPrice.setText(order.getDiscounts().getAmount().toString());
+        }else{
+            holder.discountPrice.setText("0");
+        }
+        holder.taxPrice.setText("5.0");
+        holder.shippingPrice.setText("10.00");
         List<Item> items = order.getAllItems();
         for (Item item: items) {
             if(item != null){
