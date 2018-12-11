@@ -33,7 +33,8 @@
                     android:id="@+id/itemCartImageView"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    tools:srcCompat="@drawable/android1" />
+                    app:srcCompat="@color/common_google_signin_btn_text_dark_focused"
+                    tools:srcCompat="@color/common_google_signin_btn_text_dark_focused" />
 
                 <TextView
                     android:id="@+id/itemCartName"

@@ -89,9 +89,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        //Uncommment this if it crashes upon loading the profile page, then comment again and run
-        //newProfile = new Profile("a", "a", "a", "a", "a", "a", "a", "a");
-        //profileRef.setValue(newProfile);
+////        Uncommment this if it crashes upon loading the profile page, then comment again and run
+//        newProfile = new Profile("a", "a", "a", "a", "a", "a", "a", "a");
+//        profileRef.setValue(newProfile);
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override

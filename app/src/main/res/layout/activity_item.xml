@@ -28,7 +28,8 @@
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/android1" />
+        app:srcCompat="@color/common_google_signin_btn_text_dark_focused"
+        tools:srcCompat="@color/common_google_signin_btn_text_dark_focused" />
 
     <TextView
         android:id="@+id/ItemActivityDescription"

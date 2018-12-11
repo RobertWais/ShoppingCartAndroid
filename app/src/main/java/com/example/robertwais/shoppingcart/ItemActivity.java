@@ -64,27 +64,26 @@ public class ItemActivity extends AppCompatActivity {
         quantity.setText(itemPassed.getString("#"));
 
         ImageView prodImage = findViewById(R.id.ItemActivityImage);
-        int position = itemPassed.getInt("Position");
-        switch (position){
-            case 0:
+        String key = itemPassed.getString("key");
+        switch (key){
+            case "-LQ1SiQFBH0LvrouzOe2":
                 prodImage.setImageResource(R.drawable.android0);
                 break;
-            case 1:
+            case "-LQ1SiQHGSBFH4yVbD8z":
                 prodImage.setImageResource(R.drawable.android1);
                 break;
-            case 2:
+            case "-LQ1SiQHGSBFH4yVbD9-":
                 prodImage.setImageResource(R.drawable.android2);
                 break;
-            case 3:
+            case "-LQ1SiQIuNPPgkqM6V2u":
                 prodImage.setImageResource(R.drawable.android3);
                 break;
-            case 4:
+            case "-LQ1SiQIuNPPgkqM6V2v":
                 prodImage.setImageResource(R.drawable.android4);
                 break;
-            case 5:
-                prodImage.setImageResource(R.drawable.android5);
+            case "-LQ1SiQJ9wmNbtpf_sGe":
+//                prodImage.setImageResource(R.drawable.android5);
                 break;
-
         }
 
         addToCart.setOnClickListener(new View.OnClickListener() {
