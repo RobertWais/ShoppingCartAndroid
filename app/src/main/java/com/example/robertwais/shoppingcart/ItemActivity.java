@@ -66,23 +66,23 @@ public class ItemActivity extends AppCompatActivity {
         ImageView prodImage = findViewById(R.id.ItemActivityImage);
         String key = itemPassed.getString("key");
         switch (key){
-            case "-LQ1SiQFBH0LvrouzOe2":
+            case "-LTQeVHIhk6iGDbKT_PT":
                 prodImage.setImageResource(R.drawable.android0);
                 break;
-            case "-LQ1SiQHGSBFH4yVbD8z":
+            case "-LTQeVHNjO-kl17TuK7D":
                 prodImage.setImageResource(R.drawable.android1);
                 break;
-            case "-LQ1SiQHGSBFH4yVbD9-":
+            case "-LTQeVHS6Psnmv87M5Bt":
                 prodImage.setImageResource(R.drawable.android2);
                 break;
-            case "-LQ1SiQIuNPPgkqM6V2u":
+            case "-LTQeVHUegrdz79jtdR9":
                 prodImage.setImageResource(R.drawable.android3);
                 break;
-            case "-LQ1SiQIuNPPgkqM6V2v":
+            case "-LTQeVHaXSrwccgFwCoF":
                 prodImage.setImageResource(R.drawable.android4);
                 break;
-            case "-LQ1SiQJ9wmNbtpf_sGe":
-//                prodImage.setImageResource(R.drawable.android5);
+            case "-LTQeVHkfSqwroRHevmZ":
+                prodImage.setImageResource(R.drawable.android5);
                 break;
         }
 

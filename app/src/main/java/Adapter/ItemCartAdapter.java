@@ -112,22 +112,22 @@ public class ItemCartAdapter extends RecyclerView.Adapter<ItemCartAdapter.ViewHo
         holder.total.setText(String.valueOf("Total: " +item.getQuantity() * item.getPrice()));
         String key = item.getKey();
         switch (key){
-            case "-LQ1SiQFBH0LvrouzOe2":
+            case "-LTQeVHIhk6iGDbKT_PT":
                 holder.imageView.setImageResource(R.drawable.android0);
                 break;
-            case "-LQ1SiQHGSBFH4yVbD8z":
+            case "-LTQeVHNjO-kl17TuK7D":
                 holder.imageView.setImageResource(R.drawable.android1);
                 break;
-            case "-LQ1SiQHGSBFH4yVbD9-":
+            case "-LTQeVHS6Psnmv87M5Bt":
                 holder.imageView.setImageResource(R.drawable.android2);
                 break;
-            case "-LQ1SiQIuNPPgkqM6V2u":
+            case "-LTQeVHUegrdz79jtdR9":
                 holder.imageView.setImageResource(R.drawable.android3);
                 break;
-            case "-LQ1SiQIuNPPgkqM6V2v":
+            case "-LTQeVHaXSrwccgFwCoF":
                 holder.imageView.setImageResource(R.drawable.android4);
                 break;
-            case "-LQ1SiQJ9wmNbtpf_sGe":
+            case "-LTQeVHkfSqwroRHevmZ":
                 holder.imageView.setImageResource(R.drawable.android5);
                 break;
         }
