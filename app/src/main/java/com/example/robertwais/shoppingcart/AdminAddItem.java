@@ -28,8 +28,6 @@ public class AdminAddItem extends AppCompatActivity {
         database = db.getReference();
         itemsRef = database.child("Items");
 
-
-
         confirm = findViewById(R.id.adminConfirmAdd);
 
         name = (EditText) findViewById(R.id.adminItemNameField);
@@ -43,12 +41,10 @@ public class AdminAddItem extends AppCompatActivity {
                 //Database connections
                 String newKey = itemsRef.push().getKey();
                 Item newItem = new Item(name.getText().toString(), description.getText().toString(), Double.valueOf(price.getText().toString()));
+                newItem.setKey(newKey);
                 itemsRef.child(newKey).setValue(newItem);
                 finish();
             }
         });
-
-
-
     }
 }

@@ -53,10 +53,6 @@ public class OrderHistory extends AppCompatActivity {
         }
 
 
-
-
-
-
         recyclerView = (RecyclerView) findViewById(R.id.orderHistoryActivityRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,9 +60,6 @@ public class OrderHistory extends AppCompatActivity {
 
         adapter = new FullOrderAdapter(OrderHistory.this, theList);
         recyclerView.setAdapter(adapter);
-
-
-
 
         adapter.notifyDataSetChanged();
 

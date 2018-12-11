@@ -31,6 +31,7 @@ import Adapter.ItemAdapter;
 import Adapter.ItemCartAdapter;
 import Model.Item;
 import Model.Order;
+import Model.Profile;
 import Model.Promotion;
 
 public class ShoppingCartActivity extends AppCompatActivity {
@@ -42,9 +43,10 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private EditText promoCode;
 
     private FirebaseDatabase db;
-    private DatabaseReference database, cartRef, promotionReference,orderHistoryRef;
+    private DatabaseReference database, cartRef, promotionReference,orderHistoryRef,profileRef;
     private FirebaseAuth mAuth;
     private TaxesHandler theTaxesHandler = new TaxesHandler();
+    private Profile userProf;
 
 
     private RecyclerView recyclerView;
@@ -79,6 +81,33 @@ public class ShoppingCartActivity extends AppCompatActivity {
             promoCode.setVisibility(View.GONE);
             enterCode.setVisibility(View.GONE);
         }
+
+        //Get shipping address
+        //billing address
+        //Shipping cost
+        //Tax
+
+        if(mAuth.getCurrentUser()!=null){
+            profileRef = database.child(mAuth.getCurrentUser().getUid()).child("ProfileHistory");
+        }else{
+            profileRef = database.child("Guest").child("ProfileHistory");
+        }
+
+        //**This retrieves from database do line below this comment
+
+        profileRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //**Once we get profile you have access to methods
+
+               userProf = dataSnapshot.getValue(Profile.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
 
@@ -279,10 +308,10 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         if(promotion==null){
 //            Order(Item[] items, Double shippingCost, Double total, String shipping, String billing)
-          return new Order(theList, shippingValue, dubTotalPrice, "Shipping Address", "Billing Address");
+          return new Order(theList, shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
         }else{
 //            Order(Item[] items, Promotion promo, Double shippingCost, Double total, String shipping, String billing)
-            return new Order(theList, promotion ,shippingValue, dubTotalPrice, "Shipping Address", "Billing Address");
+            return new Order(theList, promotion ,shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
         }
 
     }
