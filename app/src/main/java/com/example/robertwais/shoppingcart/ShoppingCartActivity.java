@@ -106,6 +106,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
                userProf = dataSnapshot.getValue(Profile.class);
 
                 stateCode = userProf.getBillingState();
+
+
                 billingZip = Integer.parseInt(userProf.getBillingCode());
                 shippingZip = Integer.parseInt(userProf.getShippingCode());
                 Log.i("NEUTRAL", "stateCode: " + stateCode + " billingZip: " + billingZip + " shippingZip: " + shippingZip);

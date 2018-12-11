@@ -63,11 +63,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (mAuth.getCurrentUser() != null) {
-                        if (!mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())) {
-                            removeBtn.setVisibility(View.GONE);
-                        }
+                    if (mAuth.getCurrentUser() == null) {
+                        removeBtn.setVisibility(View.GONE);
+                    }else if (!mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())) {
+                        removeBtn.setVisibility(View.GONE);
                     }
+
+
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -92,7 +94,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(!mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())){
+                    if (mAuth.getCurrentUser() == null) {
                         //This is where the user has tapped
                         int position = getAdapterPosition();
                         Item item = itemList.get(position);
@@ -106,7 +108,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                         intent.putExtra("#",item.getQuantity());
 
 
-                        Log.d("ThisIsHere", "");
+                        context.startActivity(intent);
+                    }else if(!mAuth.getCurrentUser().getUid().equals(dataSnapshot.getValue())){
+                        //This is where the user has tapped
+                        int position = getAdapterPosition();
+                        Item item = itemList.get(position);
+
+                        Intent intent = new Intent(context, ItemActivity.class);
+                        intent.putExtra("Name", item.getName());
+                        intent.putExtra("Description", item.getDescription());
+                        intent.putExtra("Price",item.getPrice());
+                        intent.putExtra("Position",position);
+                        intent.putExtra("key",item.getKey());
+                        intent.putExtra("#",item.getQuantity());
+
+
                         context.startActivity(intent);
                     }
                 }
