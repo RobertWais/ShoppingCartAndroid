@@ -63,7 +63,7 @@
         android:text="XXXX-XXXX-XXXX-XXXX"
         android:textSize="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/verify" />
 
     <EditText
         android:id="@+id/profileBilling"
@@ -124,7 +124,6 @@
         android:id="@+id/ccv"
         android:layout_width="67dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -133,7 +132,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.185"
         app:layout_constraintStart_toEndOf="@+id/profileCreditCard"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toTopOf="@+id/profileCreditCard" />
+
+    <TextView
+        android:id="@+id/verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginEnd="8dp"
+        android:text="Unknown Card Type"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView8"

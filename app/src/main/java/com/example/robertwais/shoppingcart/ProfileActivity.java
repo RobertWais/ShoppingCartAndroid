@@ -31,10 +31,14 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseDatabase db;
     private DatabaseReference database, profileRef;
     private FirebaseAuth mAuth;
+    private CreditCardVerification ccVerif = new CreditCardVerification();
 
     public EditText shippingTextView, creditCard, billingInfo, ccv, shippingState, shippingCode, billingState, billingCode;
+    public TextView verification;
     public Button change;
     public Profile newProfile;
+
+    public String ship = "", shipState = "", shipCode = "", bill = "", billState = "", billCode = "", credit = "", cc = "", ccType = "";
 
 
     @Override
@@ -52,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
         billingState = (EditText) findViewById(R.id.billingState);
         billingCode = (EditText) findViewById(R.id.billingCode);
         change = findViewById(R.id.updateInfo);
+        verification = (TextView) findViewById(R.id.verify);
 
         //**This code grabs sets up everything needed for database
         //Follow this to set up the references
@@ -81,6 +86,10 @@ public class ProfileActivity extends AppCompatActivity {
                 billingCode.setText(profile.getBillingCode());
                 creditCard.setText(profile.getCreditCard());
                 ccv.setText(profile.getCcv());
+
+                //Added by Brian
+                credit = creditCard.getText().toString();
+                verification.setText(ccVerif.verifyCardNumber(credit));
             }
 
             @Override
@@ -96,17 +105,26 @@ public class ProfileActivity extends AppCompatActivity {
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String ship = shippingTextView.getText().toString();
-                String shipState = shippingState.getText().toString();
-                String shipCode = shippingCode.getText().toString();
-                String bill = billingInfo.getText().toString();
-                String billState = billingState.getText().toString();
-                String billCode = billingCode.getText().toString();
-                String credit = creditCard.getText().toString();
-                String cc = ccv.getText().toString();
+                ship = shippingTextView.getText().toString();
+                shipState = shippingState.getText().toString();
+                shipCode = shippingCode.getText().toString();
+                bill = billingInfo.getText().toString();
+                billState = billingState.getText().toString();
+                billCode = billingCode.getText().toString();
+                credit = creditCard.getText().toString();
+                cc = ccv.getText().toString();
                 newProfile = new Profile(ship, bill, credit, shipState, shipCode, billState, billCode, cc);
-                profileRef.setValue(newProfile);
-                Toast.makeText(ProfileActivity.this, "Updated Profile Information", Toast.LENGTH_SHORT).show();
+
+                //Added by Brian
+                verification.setText(ccVerif.verifyCardNumber(credit));
+                ccType = verification.getText().toString();
+
+                if (!ccType.equals("Unknown Card Type")) {
+                    profileRef.setValue(newProfile);
+                    Toast.makeText(ProfileActivity.this, "Updated Profile Information", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Credit Card Data Invalid\nProfile Information NOT Updated", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
