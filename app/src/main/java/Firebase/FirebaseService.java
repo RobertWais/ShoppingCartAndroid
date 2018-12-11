@@ -103,7 +103,7 @@ public class FirebaseService {
                     profileRef = database.child(mAuth.getCurrentUser().getUid()).child("ProfileHistory");
                     currUser = FirebaseAuth.getInstance().getCurrentUser();
                     database.child("Users").child(user.getUid()).setValue(user.getEmail());
-                    Profile newProfile = new Profile("Change later", "Chane Later", "Change Later");
+                    Profile newProfile = new Profile("Enter Shipping Address", "Enter Billing Address", "XXXX-XXXX-XXXX-XXXX", "AL", "00000", "AL", "0000", "000");
                     String newKey = profileRef.push().getKey();
                     profileRef.child(newKey).setValue(newProfile);
 
