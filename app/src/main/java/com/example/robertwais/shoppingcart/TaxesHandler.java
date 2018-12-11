@@ -1,3 +1,5 @@
+// Brian LaPlante - Taxes calculator based on State Code and Zip Code
+// Tax rate based on 10/2018 Avalara dataset
 package com.example.robertwais.shoppingcart;
 
 import android.content.Context;
@@ -5,7 +7,6 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -73,10 +74,9 @@ public class TaxesHandler {
 
         for (i = 0; i < 52 && stateCodes[i] != stateCode; i++) {
 
-
         }
         if (i == 52) {
-            Log.i("BAD", "Error finding state code");
+            Log.i("BAD", "Error finding state code: " + stateCode);
             return 0.0;
         }
 
@@ -120,7 +120,5 @@ public class TaxesHandler {
         Log.i("GOOD", "Tax rate found!");
         return taxRate;
     }
-
-    ;
 
 }
