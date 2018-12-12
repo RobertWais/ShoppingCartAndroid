@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 
 public class TaxesHandler {
 
+    //Includes Puerto Rico and DC
     private String[] stateCodes = {
             "AK",
             "AL",
@@ -72,9 +73,11 @@ public class TaxesHandler {
         double taxValue = 0.0;
         int i;
 
+        // Attempts to find index for state code
         for (i = 0; i < 52 && !stateCodes[i].equals(stateCode); i++) {
 
         }
+        // Not found error catch and log for debugging
         if (i == 52) {
             Log.i("BAD", "Error finding state code: " + stateCode);
             return 0.0;
@@ -93,12 +96,15 @@ public class TaxesHandler {
         String split = ",";
 
         try {
+            // Generate filename
             String filename = "taxdata/TAXRATES_ZIP5_" + stateCodes[i] + "201810.csv";
 
             br = new BufferedReader(new InputStreamReader(
                     context.getAssets().open(filename)));
+
             while ((line = br.readLine()) != null) {
 
+                // Finds zip code for state file & collects the state rate w/break if found
                 String[] separatedLine = line.split(split);
                 if (separatedLine[1].equals("" + zipCode)) {
                     taxRate = Double.parseDouble(separatedLine[4]);
