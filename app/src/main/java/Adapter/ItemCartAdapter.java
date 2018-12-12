@@ -1,3 +1,8 @@
+/*
+This is an adapter class for items in
+the cart
+ */
+
 package Adapter;
 
 

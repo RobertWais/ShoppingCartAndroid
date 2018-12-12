@@ -1,3 +1,8 @@
+/*
+This is an adapter for promotion items
+ */
+
+
 package Adapter;
 
 
@@ -57,9 +62,6 @@ public class PromotionAdminAdapter extends RecyclerView.Adapter<PromotionAdminAd
 
             PromoActivity activity = (PromoActivity) context;
             activity.promoItemID.setText(item.getKey());
-//            context.id = "dfd";
-            //Maybe Change Later but nothing for now..
-            //Send back info
         }
 
     }

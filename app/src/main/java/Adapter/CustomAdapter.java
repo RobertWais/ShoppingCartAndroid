@@ -1,3 +1,8 @@
+/*
+This class is a custom adapter for displaying items
+in order history
+ */
+
 package Adapter;
 
 import android.content.Context;

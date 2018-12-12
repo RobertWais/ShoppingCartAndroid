@@ -1,3 +1,8 @@
+/*
+This class is an adapter to hold and order
+for order history
+ */
+
 package Adapter;
 
 

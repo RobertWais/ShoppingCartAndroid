@@ -85,11 +85,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
             enterCode.setVisibility(View.GONE);
         }
 
-        //Get shipping address
-        //billing address
-        //Shipping cost
-        //Tax
-
         if(mAuth.getCurrentUser()!=null){
             profileRef = database.child(mAuth.getCurrentUser().getUid()).child("ProfileHistory");
         }else{
@@ -97,21 +92,15 @@ public class ShoppingCartActivity extends AppCompatActivity {
         }
 
         //**This retrieves from database do line below this comment
-
         profileRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //**Once we get profile you have access to methods
-
-               userProf = dataSnapshot.getValue(Profile.class);
-
+                userProf = dataSnapshot.getValue(Profile.class);
                 stateCode = userProf.getBillingState();
-
-
                 billingZip = Integer.parseInt(userProf.getBillingCode());
                 shippingZip = Integer.parseInt(userProf.getShippingCode());
                 Log.i("NEUTRAL", "stateCode: " + stateCode + " billingZip: " + billingZip + " shippingZip: " + shippingZip);
-
 
             }
 
@@ -122,15 +111,13 @@ public class ShoppingCartActivity extends AppCompatActivity {
         });
 
 
-
+        //Setup recyclerview and list
         recyclerView = (RecyclerView) findViewById(R.id.shoppingCartRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         theList = new ArrayList<>();
-
         adapter = new ItemCartAdapter(ShoppingCartActivity.this, theList);
         recyclerView.setAdapter(adapter);
-
 
         //Check For Promo Code
         enterCode.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +125,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!promoCode.getText().toString().equals("")){
                     String tempCode = promoCode.getText().toString();
-
 
                     promotionReference.child(tempCode).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -160,10 +146,11 @@ public class ShoppingCartActivity extends AppCompatActivity {
                                         checkPromotions();
                                         break;
                                     }
+
+                                    //If promotion does not apply
                                     if(i==theList.size()-1){
                                         Toast.makeText(ShoppingCartActivity.this, "Promotion Not Valid For Cart", Toast.LENGTH_SHORT).show();
                                     }
-//                                        Toast.makeText(ShoppingCartActivity.this, "Promotion Not Applied", Toast.LENGTH_SHORT).show()
                                 }
                             }else{
                                 Toast.makeText(ShoppingCartActivity.this, "Promotion Invalid", Toast.LENGTH_SHORT).show();
@@ -183,9 +170,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Needs to update the database cart
-//                theList.clear();
-//                adapter.notifyDataSetChanged();
                 Order newOrder = checkPromotions();
                 Toast.makeText(ShoppingCartActivity.this, "Checkout Complete!\nThank you!", Toast.LENGTH_SHORT).show();
 
@@ -219,6 +203,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
 
         //Check for new items added to Cart
+        //Retrieves item and updates the UI
         cartRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -266,6 +251,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         });
     }
 
+    //Checks the promotion
     public Order checkPromotions(){
         //
         int totalItemCount = 0;
@@ -319,8 +305,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         totalPrice.setText("Total Price:\n$" + String.valueOf(dubTotalPrice));
 
+        //Create a new order based upon guest or regular user
         if(promotion==null){
-//            Order(Item[] items, Double shippingCost, Double total, String shipping, String billing)
             if(userProf==null){
                 return new Order(theList, shippingValue, dubTotalPrice, "", "");
 
@@ -334,20 +320,17 @@ public class ShoppingCartActivity extends AppCompatActivity {
             }else{
                 return new Order(theList, promotion ,shippingValue, dubTotalPrice, userProf.getShippingAddress(), userProf.getBillingAddress());
             }
-//            Order(Item[] items, Promotion promo, Double shippingCost, Double total, String shipping, String billing)
         }
 
     }
 
 
     public void setTotals(@NonNull DataSnapshot dataSnapshot, @Nullable String s, Boolean add){
-
         Item newItem = dataSnapshot.getValue(Item.class);
         if (add) {
             theList.add(newItem);
             adapter.notifyDataSetChanged();
         }
-
         checkPromotions();
     }
 

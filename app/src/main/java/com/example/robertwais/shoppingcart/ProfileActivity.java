@@ -37,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
     public TextView verification;
     public Button change;
     public Profile newProfile;
-
     public String ship = "", shipState = "", shipCode = "", bill = "", billState = "", billCode = "", credit = "", cc = "", ccType = "";
 
 
@@ -70,8 +69,7 @@ public class ProfileActivity extends AppCompatActivity {
             profileRef = database.child("Guest").child("ProfileHistory");
         }
 
-        //**This retrieves from database do line below this comment
-
+        //**This retrieves from database and pulls the profile of the user
         profileRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -98,10 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-////        Uncommment this if it crashes upon loading the profile page, then comment again and run
-//        newProfile = new Profile("a", "a", "a", "a", "a", "a", "a", "a");
-//        profileRef.setValue(newProfile);
-
+        //Updates profile values
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +122,5 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
-
 }
