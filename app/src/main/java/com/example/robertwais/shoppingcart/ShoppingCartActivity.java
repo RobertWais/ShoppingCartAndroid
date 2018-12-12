@@ -278,7 +278,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
 
         subtotalPrice.setText("Subtotal Price:\n$" + String.valueOf(dubTotalPrice));
 
-
         promoSavings = Math.round(promoSavings * 100.0);
         promoSavings = promoSavings / 100;
         cartPromoSavings.setText("Promo Savings:\n$" + String.format("%.2f", promoSavings));
@@ -287,19 +286,23 @@ public class ShoppingCartActivity extends AppCompatActivity {
         else
             cartPromoSavings.setVisibility(View.INVISIBLE);
 
+        //Brian - Tax Calculation, fixes rounding issue: x.xx[5-9] rounding down to x.xx
         double taxesValue = 0.0;
         taxesValue = theTaxesHandler.calculateTaxes(ShoppingCartActivity.this, stateCode, billingZip, dubTotalPrice);
         taxesValue = Math.round(taxesValue * 100.0);
         taxesValue = taxesValue / 100;
         cartTaxes.setText("Estimated Tax:\n$" + String.format("%.2f", taxesValue));
 
+        //Brian - Shipping Calculation
         double shippingValue = 0.0;
         shippingValue = theShippingHandler.calculateShipping(ShoppingCartActivity.this, shippingZip, totalItemCount);
         cartShipping.setText("Shipping:\n$" + String.format("%.2f", shippingValue));
 
+        //Adjusting Total Price to adjust for calculated values
         dubTotalPrice -= promoSavings;
         dubTotalPrice += taxesValue;
         dubTotalPrice += shippingValue;
+        //Ensuring rounding error fix : x.xx[5-9] rounding down to x.xx
         dubTotalPrice = Math.round(dubTotalPrice * 100.0);
         dubTotalPrice = dubTotalPrice / 100;
 

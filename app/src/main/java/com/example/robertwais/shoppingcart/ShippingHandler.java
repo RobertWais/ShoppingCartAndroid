@@ -14,6 +14,7 @@ public class ShippingHandler {
 
     double calculateShipping(Context context, int zipCode, int itemsInCart) {
         double shippingCost = 0.0;
+
         int zoneCode = getZoneCode(context, zipCode);
 
 
@@ -23,6 +24,7 @@ public class ShippingHandler {
         return shippingCost;
     }
 
+    // Zone code required for rates to specific zones
     int getZoneCode(Context context, int zipCode) {
         int zipPrefix = Integer.parseInt(Integer.toString(zipCode).substring(0, 3));
         int prefix1 = 0, prefix2 = 0;
@@ -36,7 +38,11 @@ public class ShippingHandler {
 
             br = new BufferedReader(new InputStreamReader(
                     context.getAssets().open(filename)));
+
+            // First line ignore
             line = br.readLine();
+
+            // Locate line with matching prefix and extract zone code break on locate
             while ((line = br.readLine()) != null) {
 
                 String[] separatedLine = line.split(split);
@@ -78,17 +84,20 @@ public class ShippingHandler {
             br = new BufferedReader(new InputStreamReader(
                     context.getAssets().open(filename)));
 
+            // Locates zone code line
             for (lineNum = 0; lineNum <= 2; lineNum++) {
                 line = br.readLine();
             }
             String[] separatedLine = line.split(split);
 
+            // Find column for zone code specified
             while (Integer.parseInt(separatedLine[colNum]) != zoneCode) {
-                Log.i("NEUTRAL", "zoneCode " + zoneCode);
+                Log.i("NEUTRAL", "zoneCode " + zoneCode); // # of prints for # of column checks : Used for debugging
 
                 colNum++;
             }
 
+            // Find rate based on zone column and number of items in the cart
             while ((line = br.readLine()) != null) {
                 separatedLine = line.split(split);
 
