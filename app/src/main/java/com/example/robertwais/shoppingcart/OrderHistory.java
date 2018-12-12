@@ -43,9 +43,12 @@ public class OrderHistory extends AppCompatActivity {
         setContentView(R.layout.activity_order_history);
 
 
+        /*Connect to database*/
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
         database = db.getReference();
+
+        //Set Order history reference
         if(mAuth.getCurrentUser()!=null){
             orderHistoryRef = database.child(mAuth.getCurrentUser().getUid()).child("OrderHistory");
         }else{
@@ -53,11 +56,11 @@ public class OrderHistory extends AppCompatActivity {
         }
 
 
+        //Setup recyclerview and adapter
         recyclerView = (RecyclerView) findViewById(R.id.orderHistoryActivityRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         theList = new ArrayList<>();
-
         adapter = new FullOrderAdapter(OrderHistory.this, theList);
         recyclerView.setAdapter(adapter);
 

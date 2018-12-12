@@ -1,3 +1,4 @@
+
 package com.example.robertwais.shoppingcart;
 
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class AdminAddItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_add_item);
 
+        /*Connect to database*/
         db = FirebaseDatabase.getInstance();
         database = db.getReference();
         itemsRef = database.child("Items");
