@@ -22,6 +22,7 @@ public class AdminPage extends AppCompatActivity {
         browseBtn = findViewById(R.id.browseForAdminBtn);
         addItem = findViewById(R.id.adminAddItemBtn);
 
+        //Redirects to add promotion for admin
         promoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -30,6 +31,7 @@ public class AdminPage extends AppCompatActivity {
             }
         });
 
+        //Redirects to browse for admin
         browseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,6 +40,7 @@ public class AdminPage extends AppCompatActivity {
             }
         });
 
+        //Redirects to add item for admin
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

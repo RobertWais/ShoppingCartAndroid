@@ -1,3 +1,8 @@
+/*
+This class is an adapter for items in the
+browse activity
+ */
+
 package Adapter;
 
 
